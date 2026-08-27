@@ -3,8 +3,7 @@ import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
-  site: 'https://sh4r1f-me.github.io',
-  base: '/sharif-portfolio',
+  site: 'https://sharifmadber.online',
   output: 'static',
   integrations: [
     react(),
