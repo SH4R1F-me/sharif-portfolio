@@ -5,6 +5,8 @@ import SEOHead from '../components/layout/SEOHead.astro';
 import Header from '../components/layout/Header.astro';
 import Footer from '../components/layout/Footer.astro';
 
+import '../styles/global.css';
+
 interface Props {
   title?: string;
   description?: string;
@@ -19,7 +21,6 @@ const { title, description, canonicalUrl, ogImage } = Astro.props;
 <html lang="en">
   <head>
     <SEOHead {title} {description} {canonicalUrl} {ogImage} />
-    <link rel="stylesheet" href="/src/styles/global.css" />
   </head>
   <body>
     <!-- Skip to main content (accessibility) -->
