@@ -5,6 +5,23 @@
 @import './tokens.css';
 @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300..800&family=IBM+Plex+Mono:wght@400;500&display=swap');
 
+/* ── KineticGrid Background ── */
+#kinetic-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  /* pointer-events enabled so mouse moves reach the grid host */
+}
+
+/* Ensure all page content sits above the kinetic background */
+.skip-link,
+#site-header,
+main,
+#site-footer {
+  position: relative;
+  z-index: 1;
+}
+
 /* ── Reset ── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
