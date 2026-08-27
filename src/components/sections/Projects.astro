@@ -1,0 +1,187 @@
+---
+// Projects.astro — Featured projects section
+
+import { featuredProjects, projects } from '../../data/projects';
+
+const displayProjects = featuredProjects.length > 0 ? featuredProjects : projects;
+
+// Don't render section if no published projects
+if (displayProjects.length === 0) return;
+---
+
+<section id="projects" class="section projects-section" aria-labelledby="projects-heading">
+  <div class="container">
+    <div class="projects-header">
+      <p class="section-label reveal">Projects</p>
+      <h2 id="projects-heading" class="reveal" style="animation-delay:0.1s">
+        Featured Work
+      </h2>
+      <p class="projects-intro reveal" style="animation-delay:0.2s">
+        Evidence-based case studies — each showing the problem, approach, and verified outcome.
+      </p>
+    </div>
+
+    <div class="projects-grid">
+      {displayProjects.map((project, i) => (
+        <article
+          class="project-card reveal"
+          style={`animation-delay:${(i * 0.1 + 0.3).toFixed(1)}s`}
+          aria-labelledby={`project-title-${project.slug}`}
+        >
+          <!-- Cover -->
+          <div class="project-cover">
+            <img
+              src={project.coverImage}
+              alt={`${project.title} — project screenshot`}
+              loading="lazy"
+              class="project-cover-img"
+            />
+            <div class="project-cover-overlay"></div>
+            <span class="project-category tag">{project.category}</span>
+          </div>
+
+          <!-- Body -->
+          <div class="project-body">
+            <h3 id={`project-title-${project.slug}`} class="project-title">
+              {project.title}
+            </h3>
+            <p class="project-summary">{project.summary}</p>
+
+            <!-- Tools -->
+            <ul class="project-tools" aria-label="Tools used">
+              {project.tools.slice(0, 5).map((tool) => (
+                <li><span class="tag">{tool}</span></li>
+              ))}
+            </ul>
+
+            <a
+              href={`/projects/${project.slug}`}
+              class="btn btn-secondary project-btn"
+              aria-label={`View case study: ${project.title}`}
+            >
+              View Case Study →
+            </a>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .projects-header {
+    max-width: 60ch;
+    margin-bottom: var(--space-12);
+  }
+
+  .projects-header h2 {
+    margin-bottom: var(--space-4);
+  }
+
+  .projects-intro {
+    font-size: var(--text-lg);
+    color: var(--color-muted);
+  }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: var(--space-6);
+  }
+
+  /* Project card */
+  .project-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition:
+      border-color var(--duration-normal) var(--ease-out),
+      box-shadow var(--duration-normal) var(--ease-out),
+      transform var(--duration-normal) var(--ease-out);
+  }
+
+  .project-card:hover,
+  .project-card:focus-within {
+    border-color: var(--color-cyan);
+    box-shadow: var(--glow-cyan);
+    transform: translateY(-4px);
+  }
+
+  /* Cover */
+  .project-cover {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: var(--color-bg-elevated);
+  }
+
+  .project-cover-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform var(--duration-slow) var(--ease-out);
+  }
+
+  .project-card:hover .project-cover-img {
+    transform: scale(1.03);
+  }
+
+  .project-cover-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, transparent 40%, rgba(5, 7, 11, 0.6) 100%);
+  }
+
+  .project-category {
+    position: absolute;
+    top: var(--space-3);
+    left: var(--space-3);
+  }
+
+  /* Body */
+  .project-body {
+    padding: var(--space-6);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    flex: 1;
+  }
+
+  .project-title {
+    font-size: var(--text-xl);
+    font-weight: 700;
+    color: var(--color-text);
+    letter-spacing: -0.02em;
+    line-height: 1.3;
+  }
+
+  .project-summary {
+    font-size: var(--text-sm);
+    color: var(--color-muted);
+    line-height: 1.65;
+    max-width: none;
+    flex: 1;
+  }
+
+  .project-tools {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .project-btn {
+    align-self: flex-start;
+    margin-top: auto;
+  }
+
+  @media (max-width: 767px) {
+    .projects-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

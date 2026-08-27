@@ -1,0 +1,105 @@
+---
+// 404.astro — Friendly not-found page
+
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Page Not Found — Sharif Madber"
+  description="The page you're looking for doesn't exist."
+>
+  <section class="notfound-section" aria-labelledby="notfound-heading">
+    <div class="container notfound-container">
+      <!-- Visual -->
+      <div class="notfound-visual" aria-hidden="true">
+        <div class="notfound-code">404</div>
+        <div class="notfound-shield">
+          <img src="/assets/brand/sm-shield.svg" alt="" width="120" height="148" />
+        </div>
+      </div>
+
+      <h1 id="notfound-heading" class="notfound-heading">
+        Page Not Found
+      </h1>
+      <p class="notfound-desc">
+        The page you're looking for doesn't exist or has been moved.
+        Head back to the portfolio to continue exploring.
+      </p>
+
+      <div class="notfound-cta">
+        <a href="/" class="btn btn-primary">
+          ← Back to Portfolio
+        </a>
+        <a href="/#contact" class="btn btn-secondary">
+          Get in Touch
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .notfound-section {
+    min-height: 100svh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding-block: var(--space-16);
+  }
+
+  .notfound-container {
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-6);
+  }
+
+  .notfound-visual {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: var(--space-4);
+  }
+
+  .notfound-code {
+    font-size: 9rem;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.06em;
+    background: linear-gradient(135deg, rgba(0, 229, 255, 0.15), rgba(0, 229, 255, 0.04));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    user-select: none;
+  }
+
+  .notfound-shield {
+    position: absolute;
+    filter: drop-shadow(0 0 16px rgba(0, 229, 255, 0.3));
+  }
+
+  .notfound-heading {
+    font-size: clamp(var(--text-3xl), 6vw, var(--text-5xl));
+    color: var(--color-text);
+    margin-bottom: var(--space-2);
+  }
+
+  .notfound-desc {
+    font-size: var(--text-lg);
+    color: var(--color-muted);
+    max-width: 44ch;
+    text-align: center;
+    margin-inline: auto;
+  }
+
+  .notfound-cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    justify-content: center;
+    margin-top: var(--space-4);
+  }
+</style>

@@ -1,0 +1,70 @@
+---
+// SEOHead.astro — Complete SEO metadata component
+
+interface Props {
+  title?: string;
+  description?: string;
+  canonicalUrl?: string;
+  ogImage?: string;
+  type?: 'website' | 'article';
+}
+
+const {
+  title = 'Sharif Madber — Cybersecurity & IT Infrastructure',
+  description = 'Explore Sharif Madber\'s verified work in cybersecurity, Linux systems, network security, and modern IT infrastructure.',
+  canonicalUrl = Astro.url.href,
+  ogImage = '/assets/brand/og-image.webp',
+  type = 'website',
+} = Astro.props;
+
+const siteName = 'Sharif Madber';
+
+// JSON-LD structured data
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfilePage',
+  mainEntity: {
+    '@type': 'Person',
+    name: 'Sharif Madber',
+    url: Astro.site?.href ?? 'https://sharifmadber.com',
+    description,
+    sameAs: [
+      'https://sa.linkedin.com/in/sharifmadber',
+      // OWNER INPUT: Add verified social profiles
+    ],
+  },
+};
+---
+
+<!-- Primary meta -->
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonicalUrl} />
+
+<!-- Theme -->
+<meta name="theme-color" content="#05070B" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+<!-- Open Graph -->
+<meta property="og:type" content={type} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonicalUrl} />
+<meta property="og:image" content={new URL(ogImage, Astro.site ?? 'https://sharifmadber.com').href} />
+<meta property="og:site_name" content={siteName} />
+<meta property="og:locale" content="en_US" />
+
+<!-- Twitter / X Card -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={new URL(ogImage, Astro.site ?? 'https://sharifmadber.com').href} />
+
+<!-- Preconnects (fonts via CSS @import, no external JS) -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+<!-- JSON-LD Structured Data -->
+<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />

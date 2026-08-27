@@ -1,0 +1,88 @@
+/* ============================================================
+   DESIGN TOKENS — Obsidian Cyber Command Center
+   Sharif Madber Portfolio
+   ============================================================ */
+
+:root {
+  /* ── Colour Palette ── */
+  --color-bg:            #05070B;
+  --color-bg-elevated:   #0B111A;
+  --color-surface:       #111A26;
+  --color-surface-hover: #162334;
+  --color-cyan:          #00E5FF;
+  --color-cyan-dim:      rgba(0, 229, 255, 0.12);
+  --color-cyan-glow:     rgba(0, 229, 255, 0.35);
+  --color-gold:          #D7A84B;
+  --color-gold-dim:      rgba(215, 168, 75, 0.15);
+  --color-green:         #35E6A0;
+  --color-green-dim:     rgba(53, 230, 160, 0.12);
+  --color-text:          #F4F7FA;
+  --color-muted:         #A8B3C4;
+  --color-danger:        #FF6B7A;
+  --color-border:        #263548;
+
+  /* ── Semantic ── */
+  --color-link:         var(--color-cyan);
+  --color-focus-ring:   var(--color-cyan);
+  --color-active:       var(--color-cyan);
+
+  /* ── Typography ── */
+  --font-display:  'Manrope Variable', 'Manrope', system-ui, sans-serif;
+  --font-body:     'Manrope Variable', 'Manrope', system-ui, sans-serif;
+  --font-mono:     'IBM Plex Mono', 'Cascadia Code', 'Fira Code', monospace;
+
+  /* Type scale */
+  --text-xs:   0.75rem;    /* 12px */
+  --text-sm:   0.875rem;   /* 14px */
+  --text-base: 1rem;       /* 16px */
+  --text-lg:   1.125rem;   /* 18px */
+  --text-xl:   1.25rem;    /* 20px */
+  --text-2xl:  1.5rem;     /* 24px */
+  --text-3xl:  1.875rem;   /* 30px */
+  --text-4xl:  2.25rem;    /* 36px */
+  --text-5xl:  3rem;       /* 48px */
+  --text-6xl:  4rem;       /* 64px */
+  --text-7xl:  5rem;       /* 80px */
+
+  /* ── Spacing ── */
+  --space-1:   0.25rem;
+  --space-2:   0.5rem;
+  --space-3:   0.75rem;
+  --space-4:   1rem;
+  --space-6:   1.5rem;
+  --space-8:   2rem;
+  --space-10:  2.5rem;
+  --space-12:  3rem;
+  --space-16:  4rem;
+  --space-20:  5rem;
+  --space-24:  6rem;
+  --space-32:  8rem;
+  --space-section-desktop: 7rem;   /* 112px */
+  --space-section-mobile:  4.5rem; /* 72px */
+
+  /* ── Layout ── */
+  --max-width:        75rem;  /* 1200px */
+  --max-width-prose:  45rem;  /* 720px */
+  --page-pad-desktop: 2rem;
+  --page-pad-tablet:  1.5rem;
+  --page-pad-mobile:  1rem;
+
+  /* ── Borders & Radii ── */
+  --radius-sm:   0.5rem;
+  --radius-md:   0.75rem;
+  --radius-lg:   1rem;
+  --radius-xl:   1.25rem;
+  --radius-card: 1rem;
+
+  /* ── Transitions ── */
+  --ease-out:    cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --duration-fast:   150ms;
+  --duration-normal: 300ms;
+  --duration-slow:   500ms;
+
+  /* ── Shadows / Glows ── */
+  --shadow-card:  0 4px 24px rgba(0, 0, 0, 0.5);
+  --glow-cyan:    0 0 24px rgba(0, 229, 255, 0.3);
+  --glow-cyan-lg: 0 0 48px rgba(0, 229, 255, 0.2);
+}

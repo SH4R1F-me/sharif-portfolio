@@ -1,0 +1,486 @@
+---
+// PortfolioTerminal.astro — Interactive demo terminal (frontend-only)
+// No real shell, no eval, no external requests — whitelist only
+---
+
+<section id="terminal" class="section terminal-section" aria-labelledby="terminal-heading">
+  <div class="container">
+    <div class="terminal-header-text">
+      <p class="section-label reveal">Terminal</p>
+      <h2 id="terminal-heading" class="reveal" style="animation-delay:0.1s">
+        Interactive Demo
+      </h2>
+      <p class="terminal-desc reveal" style="animation-delay:0.2s">
+        A simulated interface for exploring the portfolio. Type <kbd>help</kbd> to get started.
+      </p>
+    </div>
+
+    <div class="terminal-wrapper reveal" style="animation-delay:0.3s">
+      <!-- Terminal chrome -->
+      <div class="terminal-chrome" role="region" aria-label="Interactive portfolio demo terminal — no real shell access">
+        <!-- Title bar -->
+        <div class="terminal-titlebar" aria-hidden="true">
+          <div class="terminal-dots">
+            <span class="dot dot-red"></span>
+            <span class="dot dot-yellow"></span>
+            <span class="dot dot-green"></span>
+          </div>
+          <span class="terminal-title">sm-portfolio — zsh</span>
+          <div class="terminal-actions">
+            <button class="term-action-btn" id="term-clear-btn" aria-label="Clear terminal output" title="Clear">⌫</button>
+          </div>
+        </div>
+
+        <!-- Safety badge -->
+        <div class="terminal-safety" role="note">
+          <span aria-hidden="true">🔒</span>
+          Interactive portfolio demo — no real shell access
+        </div>
+
+        <!-- Output area -->
+        <div
+          id="terminal-output"
+          class="terminal-output"
+          role="log"
+          aria-live="polite"
+          aria-atomic="false"
+          aria-label="Terminal output"
+        >
+          <div class="term-line term-welcome">
+            <span class="term-prompt" aria-hidden="true">~/portfolio</span>
+            <span class="term-comment"> # Welcome to Sharif Madber's portfolio terminal</span>
+          </div>
+          <div class="term-line">
+            <span class="term-text">Type <code>help</code> to see available commands.</span>
+          </div>
+          <div class="term-line term-spacer"></div>
+        </div>
+
+        <!-- Input area -->
+        <div class="terminal-input-row">
+          <label for="terminal-input" class="term-input-prompt" aria-label="Command prompt">
+            <span class="term-user" aria-hidden="true">visitor</span>
+            <span class="term-at" aria-hidden="true">@</span>
+            <span class="term-host" aria-hidden="true">sm-portfolio</span>
+            <span class="term-path" aria-hidden="true">:~$</span>
+          </label>
+          <input
+            id="terminal-input"
+            type="text"
+            class="term-input"
+            autocomplete="off"
+            autocorrect="off"
+            autocapitalize="off"
+            spellcheck="false"
+            placeholder="type a command..."
+            aria-label="Terminal command input"
+            maxlength="100"
+          />
+        </div>
+
+        <!-- Command hints -->
+        <div class="terminal-hints" aria-label="Quick command shortcuts">
+          {['help', 'whoami', 'skills', 'projects', 'contact'].map((cmd) => (
+            <button class="term-hint-btn" data-cmd={cmd} aria-label={`Run ${cmd} command`}>
+              {cmd}
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+// ============================================================
+// TERMINAL — Pure whitelist, no eval, no external calls
+// ============================================================
+
+const COMMANDS: Record<string, () => string[]> = {
+  help: () => [
+    '╔═══════════════════════════════════════════╗',
+    '║        Available commands                 ║',
+    '╠═══════════════════════════════════════════╣',
+    '║  help      — Show this help message       ║',
+    '║  whoami    — Professional summary         ║',
+    '║  skills    — List of skill areas          ║',
+    '║  projects  — Featured project titles      ║',
+    '║  writing   — Published articles           ║',
+    '║  contact   — Public contact links         ║',
+    '║  clear     — Clear the terminal           ║',
+    '╚═══════════════════════════════════════════╝',
+  ],
+
+  whoami: () => [
+    'Name:    Sharif Madber',
+    'Role:    Cybersecurity & IT Infrastructure Professional',
+    'Focus:   Penetration Testing • Vulnerability Management',
+    '         Linux Administration • Network Security',
+    '         Virtualization • Server Infrastructure',
+    '',
+    'I explore systems, uncover risks, and build practical',
+    'security solutions across Linux, networks, and modern',
+    'infrastructure.',
+  ],
+
+  skills: () => [
+    '[ Security ]',
+    '  ◈ Penetration Testing         [Applied]',
+    '  ◈ Vulnerability Management    [Applied]',
+    '  ◈ Network Security            [Applied]',
+    '',
+    '[ Systems ]',
+    '  ◈ Linux Administration        [Applied]',
+    '  ◈ Kali Linux                  [Applied]',
+    '  ◈ Virtualization & WSL        [Applied]',
+    '',
+    '[ Infrastructure ]',
+    '  ◈ Server & Hosting            [Applied]',
+    '  ◈ Cloudflare / Nginx          [Applied]',
+  ],
+
+  projects: () => [
+    'Featured projects will appear here once verified.',
+    '',
+    'Owner-approved case studies coming soon.',
+    'Run  contact  to connect and discuss potential work.',
+  ],
+
+  writing: () => [
+    'Published articles will appear here once added.',
+    '',
+    'Technical writing on cybersecurity and infrastructure.',
+    'Check back after owner updates the content.',
+  ],
+
+  contact: () => [
+    'Public contact channels:',
+    '',
+    '  LinkedIn   →  https://sa.linkedin.com/in/sharifmadber',
+    '',
+    'Additional contact options (email, GitHub, etc.) will',
+    'appear once the owner provides them.',
+  ],
+
+  clear: () => {
+    clearOutput();
+    return [];
+  },
+};
+
+const NOT_FOUND = (cmd: string) => [
+  `Command not found: ${sanitize(cmd)}`,
+  "Type 'help' to see available commands.",
+];
+
+// Sanitize: only allow safe display characters
+function sanitize(s: string): string {
+  return s.replace(/[<>&"'`]/g, (c) => `&#${c.charCodeAt(0)};`).slice(0, 80);
+}
+
+const output = document.getElementById('terminal-output')!;
+const input  = document.getElementById('terminal-input') as HTMLInputElement;
+const clearBtn = document.getElementById('term-clear-btn')!;
+
+function appendLines(prompt: string, lines: string[]) {
+  // Prompt line
+  const promptLine = document.createElement('div');
+  promptLine.className = 'term-line term-entered';
+  promptLine.innerHTML =
+    `<span class="term-user" aria-hidden="true">visitor</span>` +
+    `<span class="term-at" aria-hidden="true">@</span>` +
+    `<span class="term-host" aria-hidden="true">sm-portfolio</span>` +
+    `<span class="term-path" aria-hidden="true">:~$</span> ` +
+    `<span class="term-entered-cmd">${sanitize(prompt)}</span>`;
+  output.appendChild(promptLine);
+
+  // Output lines
+  lines.forEach((line) => {
+    const div = document.createElement('div');
+    div.className = 'term-line term-result';
+    // Only text — no HTML injection
+    div.textContent = line;
+    output.appendChild(div);
+  });
+
+  // Spacer
+  const spacer = document.createElement('div');
+  spacer.className = 'term-line term-spacer';
+  output.appendChild(spacer);
+
+  // Scroll to bottom
+  output.scrollTop = output.scrollHeight;
+}
+
+function clearOutput() {
+  output.innerHTML = '';
+  appendLines('clear', ['Terminal cleared. Type help for commands.']);
+}
+
+function runCommand(raw: string) {
+  const cmd = raw.trim().toLowerCase();
+  if (!cmd) return;
+
+  if (cmd in COMMANDS) {
+    const result = COMMANDS[cmd]();
+    if (result.length > 0) appendLines(raw.trim(), result);
+  } else {
+    appendLines(raw.trim(), NOT_FOUND(cmd));
+  }
+}
+
+// Input handler
+input.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    const val = input.value;
+    input.value = '';
+    runCommand(val);
+  }
+});
+
+// Clear button
+clearBtn.addEventListener('click', () => {
+  clearOutput();
+  input.focus();
+});
+
+// Hint buttons
+document.querySelectorAll('.term-hint-btn').forEach((btn) => {
+  btn.addEventListener('click', () => {
+    const cmd = (btn as HTMLElement).dataset.cmd ?? '';
+    runCommand(cmd);
+    input.focus();
+  });
+});
+</script>
+
+<style>
+  .terminal-section {
+    position: relative;
+  }
+
+  .terminal-header-text {
+    max-width: 60ch;
+    margin-bottom: var(--space-10);
+  }
+
+  .terminal-header-text h2 {
+    margin-bottom: var(--space-4);
+  }
+
+  .terminal-desc {
+    font-size: var(--text-lg);
+    color: var(--color-muted);
+  }
+
+  /* Terminal chrome */
+  .terminal-wrapper {
+    max-width: 860px;
+  }
+
+  .terminal-chrome {
+    background: var(--color-bg-elevated);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    overflow: hidden;
+    box-shadow: var(--shadow-card), var(--glow-cyan-lg);
+  }
+
+  /* Title bar */
+  .terminal-titlebar {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    padding: var(--space-3) var(--space-4);
+    background: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .terminal-dots {
+    display: flex;
+    gap: 6px;
+  }
+
+  .dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+  }
+  .dot-red    { background: #FF5F56; }
+  .dot-yellow { background: #FFBD2E; }
+  .dot-green  { background: #27C93F; }
+
+  .terminal-title {
+    flex: 1;
+    text-align: center;
+    font-size: var(--text-xs);
+    font-family: var(--font-mono);
+    color: var(--color-muted);
+    letter-spacing: 0.05em;
+  }
+
+  .terminal-actions {
+    display: flex;
+    gap: var(--space-2);
+  }
+
+  .term-action-btn {
+    background: none;
+    border: none;
+    color: var(--color-muted);
+    cursor: pointer;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: var(--text-sm);
+    transition: color var(--duration-fast), background var(--duration-fast);
+  }
+
+  .term-action-btn:hover {
+    color: var(--color-text);
+    background: var(--color-surface-hover);
+  }
+
+  /* Safety badge */
+  .terminal-safety {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-4);
+    background: rgba(53, 230, 160, 0.05);
+    border-bottom: 1px solid rgba(53, 230, 160, 0.15);
+    font-size: var(--text-xs);
+    font-family: var(--font-mono);
+    color: var(--color-green);
+    letter-spacing: 0.03em;
+  }
+
+  /* Output */
+  .terminal-output {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    line-height: 1.7;
+    padding: var(--space-4) var(--space-6);
+    min-height: 280px;
+    max-height: 400px;
+    overflow-y: auto;
+    color: var(--color-text);
+    word-break: break-word;
+  }
+
+  .term-line {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 4px;
+    min-height: 1.5em;
+  }
+
+  .term-spacer { height: var(--space-2); }
+
+  .term-welcome { color: var(--color-muted); }
+
+  .term-prompt {
+    color: var(--color-green);
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .term-comment { color: var(--color-muted); }
+  .term-text { color: var(--color-muted); }
+
+  .term-entered .term-user  { color: var(--color-green); }
+  .term-entered .term-at    { color: var(--color-muted); }
+  .term-entered .term-host  { color: var(--color-cyan); }
+  .term-entered .term-path  { color: var(--color-muted); }
+  .term-entered-cmd         { color: var(--color-text); }
+
+  .term-result { color: var(--color-muted); white-space: pre; }
+
+  /* Input row */
+  .terminal-input-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-6);
+    background: var(--color-surface);
+    border-top: 1px solid var(--color-border);
+    position: relative;
+  }
+
+  .term-input-prompt {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    cursor: text;
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+
+  .term-user  { color: var(--color-green); font-weight: 600; }
+  .term-at    { color: var(--color-muted); }
+  .term-host  { color: var(--color-cyan); }
+  .term-path  { color: var(--color-muted); margin-left: 2px; }
+
+  .term-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--color-text);
+    caret-color: var(--color-cyan);
+    min-width: 0;
+  }
+
+  .term-input::placeholder {
+    color: var(--color-border);
+  }
+
+  /* Hint buttons */
+  .terminal-hints {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-6);
+    border-top: 1px solid var(--color-border);
+    background: var(--color-bg);
+  }
+
+  .term-hint-btn {
+    padding: 0.25rem 0.625rem;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-muted);
+    cursor: pointer;
+    transition: border-color var(--duration-fast), color var(--duration-fast);
+  }
+
+  .term-hint-btn:hover {
+    border-color: var(--color-cyan);
+    color: var(--color-cyan);
+  }
+
+  /* Mobile scroll */
+  @media (max-width: 767px) {
+    .terminal-output {
+      max-height: 280px;
+      font-size: var(--text-xs);
+    }
+
+    .term-result { white-space: pre-wrap; }
+
+    .terminal-input-row {
+      padding: var(--space-3) var(--space-4);
+    }
+
+    .terminal-hints {
+      padding: var(--space-2) var(--space-4);
+    }
+  }
+</style>

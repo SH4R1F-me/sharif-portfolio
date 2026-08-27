@@ -1,0 +1,176 @@
+---
+// Expertise.astro — Skills section with constellation-style layout
+
+import { skills, skillCategories } from '../../data/skills';
+
+// Group skills by category
+const grouped = skillCategories.map((cat) => ({
+  category: cat,
+  items: skills.filter((s) => s.category === cat),
+}));
+
+// Only render if there are published skills
+if (skills.length === 0) return;
+---
+
+<section id="expertise" class="section expertise-section" aria-labelledby="expertise-heading">
+  <div class="container">
+    <div class="expertise-header">
+      <p class="section-label reveal">Expertise</p>
+      <h2 id="expertise-heading" class="reveal" style="animation-delay:0.1s">
+        What I Work With
+      </h2>
+      <p class="expertise-intro reveal" style="animation-delay:0.2s">
+        A focused set of skills built through hands-on application in real security and infrastructure environments.
+      </p>
+    </div>
+
+    <!-- Skill cards by category -->
+    <div class="expertise-groups">
+      {grouped.map((group, gi) => (
+        <div class="expertise-group reveal" style={`animation-delay:${(gi * 0.1 + 0.3).toFixed(1)}s`}>
+          <h3 class="group-heading">
+            <span class="group-dot" aria-hidden="true"></span>
+            {group.category}
+          </h3>
+          <div class="skill-grid">
+            {group.items.map((skill) => (
+              <article class="skill-card card" aria-labelledby={`skill-${skill.id}`}>
+                <div class="skill-card-header">
+                  <h4 id={`skill-${skill.id}`} class="skill-name">{skill.name}</h4>
+                  <span class="skill-tag tag">Applied</span>
+                </div>
+                <p class="skill-desc">{skill.plainDescription}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <!-- Note about skill levels -->
+    <p class="expertise-note reveal" style="animation-delay:0.6s">
+      <span aria-hidden="true">ℹ</span>
+      Skill labels reflect practical application in real work — not self-assessed percentages.
+    </p>
+  </div>
+</section>
+
+<style>
+  .expertise-section {
+    position: relative;
+  }
+
+  .expertise-section::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 20%;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(0, 229, 255, 0.05) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .expertise-header {
+    max-width: 60ch;
+    margin-bottom: var(--space-12);
+  }
+
+  .expertise-header h2 {
+    margin-bottom: var(--space-4);
+  }
+
+  .expertise-intro {
+    font-size: var(--text-lg);
+    line-height: 1.7;
+    color: var(--color-muted);
+  }
+
+  /* Groups */
+  .expertise-groups {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-12);
+  }
+
+  .group-heading {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-cyan);
+    margin-bottom: var(--space-6);
+  }
+
+  .group-dot {
+    width: 8px;
+    height: 8px;
+    background: var(--color-cyan);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--color-cyan);
+    flex-shrink: 0;
+  }
+
+  .skill-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--space-4);
+  }
+
+  /* Skill card */
+  .skill-card {
+    padding: var(--space-5) var(--space-6);
+  }
+
+  .skill-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    margin-bottom: var(--space-3);
+  }
+
+  .skill-name {
+    font-size: var(--text-base);
+    font-weight: 600;
+    color: var(--color-text);
+    letter-spacing: -0.01em;
+  }
+
+  .skill-tag {
+    flex-shrink: 0;
+  }
+
+  .skill-desc {
+    font-size: var(--text-sm);
+    color: var(--color-muted);
+    line-height: 1.65;
+    max-width: none;
+  }
+
+  /* Note */
+  .expertise-note {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--text-sm);
+    color: var(--color-border);
+    font-family: var(--font-mono);
+    margin-top: var(--space-8);
+    padding: var(--space-3) var(--space-4);
+    background: var(--color-surface);
+    border-radius: var(--radius-md);
+    border-left: 2px solid var(--color-cyan);
+    max-width: fit-content;
+  }
+
+  @media (max-width: 767px) {
+    .skill-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

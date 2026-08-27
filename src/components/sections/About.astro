@@ -1,0 +1,228 @@
+---
+// About.astro — About section
+
+import { profile } from '../../data/profile';
+
+// Only render if profile is published
+if (profile.status !== 'published') return;
+---
+
+<section id="about" class="section about-section" aria-labelledby="about-heading">
+  <div class="container">
+    <div class="about-grid">
+      <!-- Portrait / SM mark -->
+      <div class="about-visual reveal">
+        {profile.portrait ? (
+          <div class="about-portrait-wrap">
+            <img
+              src={profile.portrait}
+              alt="Sharif Madber"
+              class="about-portrait"
+              loading="lazy"
+              width="320"
+              height="320"
+            />
+          </div>
+        ) : (
+          <div class="about-shield-wrap" aria-hidden="true">
+            <img
+              src="/assets/brand/sm-shield.svg"
+              alt=""
+              class="about-shield"
+              width="200"
+              height="246"
+            />
+            <div class="about-shield-glow"></div>
+          </div>
+        )}
+      </div>
+
+      <!-- Content -->
+      <div class="about-content">
+        <p class="section-label reveal">About</p>
+        <h2 id="about-heading" class="reveal" style="animation-delay:0.1s">
+          Who I Am
+        </h2>
+
+        {profile.longBio && (
+          <p class="about-bio reveal" style="animation-delay:0.2s">
+            {profile.longBio}
+          </p>
+        )}
+
+        <!-- Focus bullets -->
+        <ul class="about-bullets reveal" style="animation-delay:0.3s" aria-label="Focus areas">
+          <li>
+            <span class="bullet-icon" aria-hidden="true">◈</span>
+            Penetration testing and vulnerability assessment on real systems
+          </li>
+          <li>
+            <span class="bullet-icon" aria-hidden="true">◈</span>
+            Linux server administration and secure infrastructure design
+          </li>
+          <li>
+            <span class="bullet-icon" aria-hidden="true">◈</span>
+            Network security, firewall configuration, and traffic analysis
+          </li>
+          <li>
+            <span class="bullet-icon" aria-hidden="true">◈</span>
+            Virtualization, WSL environments, and efficient security tooling
+          </li>
+          <li>
+            <span class="bullet-icon" aria-hidden="true">◈</span>
+            Clear technical writing and practical problem documentation
+          </li>
+        </ul>
+
+        <!-- Location / Availability — only if owner provides -->
+        {(profile.location || profile.availability) && (
+          <div class="about-status reveal" style="animation-delay:0.4s">
+            {profile.location && (
+              <div class="status-item">
+                <span aria-label="Location">📍</span>
+                <span>{profile.location}</span>
+              </div>
+            )}
+            {profile.availability && (
+              <div class="status-item">
+                <span class="dot-available" role="img" aria-label="Available"></span>
+                <span>{profile.availability}</span>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about-section {
+    position: relative;
+  }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 360px 1fr;
+    gap: var(--space-16);
+    align-items: start;
+  }
+
+  /* Portrait / Shield */
+  .about-visual {
+    position: sticky;
+    top: 100px;
+  }
+
+  .about-portrait-wrap {
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    border: 2px solid var(--color-border);
+    aspect-ratio: 1;
+  }
+
+  .about-portrait {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .about-shield-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 360px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+  }
+
+  .about-shield {
+    width: 160px;
+    filter: drop-shadow(0 0 20px rgba(0, 229, 255, 0.35));
+  }
+
+  .about-shield-glow {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at center, rgba(0, 229, 255, 0.06) 0%, transparent 65%);
+    border-radius: var(--radius-xl);
+  }
+
+  /* Content */
+  .about-content h2 {
+    margin-bottom: var(--space-6);
+  }
+
+  .about-bio {
+    font-size: var(--text-lg);
+    line-height: 1.75;
+    color: var(--color-muted);
+    margin-bottom: var(--space-8);
+    max-width: 60ch;
+  }
+
+  .about-bullets {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    margin-bottom: var(--space-8);
+  }
+
+  .about-bullets li {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+    color: var(--color-muted);
+    font-size: var(--text-base);
+    line-height: 1.6;
+  }
+
+  .bullet-icon {
+    color: var(--color-cyan);
+    font-size: var(--text-sm);
+    flex-shrink: 0;
+    margin-top: 3px;
+  }
+
+  .about-status {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-6);
+    padding: var(--space-4) var(--space-6);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+  }
+
+  .status-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--text-sm);
+    color: var(--color-muted);
+  }
+
+  /* Responsive */
+  @media (max-width: 1023px) {
+    .about-grid {
+      grid-template-columns: 1fr;
+    }
+    .about-visual {
+      position: static;
+      max-width: 300px;
+      margin-inline: auto;
+    }
+    .about-shield-wrap {
+      height: 280px;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .about-visual { max-width: 240px; }
+    .about-shield-wrap { height: 220px; }
+  }
+</style>

@@ -1,0 +1,66 @@
+---
+// FocusStrip.astro — Professional focus strip after hero
+
+import { focusAreas } from '../../data/profile';
+---
+
+<section aria-label="Areas of focus" class="focus-strip">
+  <div class="container">
+    <div class="focus-inner">
+      {focusAreas.map((area, i) => (
+        <>
+          <span class="focus-item">{area}</span>
+          {i < focusAreas.length - 1 && (
+            <span class="focus-separator" aria-hidden="true">•</span>
+          )}
+        </>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .focus-strip {
+    padding-block: var(--space-6);
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+    background: var(--color-bg-elevated);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .focus-strip::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(0, 229, 255, 0.03), transparent);
+  }
+
+  .focus-inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-4);
+  }
+
+  .focus-item {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    transition: color var(--duration-fast);
+  }
+
+  .focus-item:hover {
+    color: var(--color-cyan);
+  }
+
+  .focus-separator {
+    color: var(--color-cyan);
+    opacity: 0.5;
+    font-size: var(--text-lg);
+  }
+</style>
