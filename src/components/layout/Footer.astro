@@ -24,9 +24,9 @@ const iconMap: Record<string, string> = {
           <img src="/assets/brand/sm-shield.svg" alt="" aria-hidden="true" width="32" height="40" />
           <span class="footer-name">Sharif Madber</span>
         </a>
-        <p class="footer-tagline">Cybersecurity & IT Infrastructure Professional</p>
+        <p class="footer-tagline">Enterprise Infrastructure & Full-Stack Systems Engineer</p>
         <p class="footer-privacy">
-          Built as a static, privacy-conscious portfolio
+          Procedural WebGL · No external model payloads
         </p>
       </div>
 
@@ -66,10 +66,12 @@ const iconMap: Record<string, string> = {
 
 <style>
   #site-footer {
-    background: var(--color-bg-elevated);
-    border-top: 1px solid var(--color-border);
+    position: relative;
+    z-index: 5;
+    background: #050605;
+    border-top: 1px solid rgba(57, 255, 20, 0.16);
     padding-block: var(--space-16) var(--space-8);
-    margin-top: var(--space-section-desktop);
+    margin-top: 0;
   }
 
   .footer-inner {
@@ -90,8 +92,9 @@ const iconMap: Record<string, string> = {
   }
 
   .footer-name {
-    font-size: var(--text-lg);
-    font-weight: 700;
+    font-family: var(--font-display);
+    font-size: var(--text-base);
+    font-weight: 650;
     color: var(--color-text);
   }
 
@@ -104,7 +107,7 @@ const iconMap: Record<string, string> = {
 
   .footer-privacy {
     font-size: var(--text-xs);
-    color: var(--color-border);
+    color: #586059;
     max-width: none;
     font-family: var(--font-mono);
   }
@@ -127,7 +130,7 @@ const iconMap: Record<string, string> = {
   }
 
   .footer-link:hover {
-    color: var(--color-cyan);
+    color: var(--color-green);
     text-decoration-color: transparent;
   }
 
@@ -154,7 +157,7 @@ const iconMap: Record<string, string> = {
   }
 
   .back-to-top:hover {
-    color: var(--color-cyan);
+    color: var(--color-green);
     text-decoration-color: transparent;
   }
 </style>

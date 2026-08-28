@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
-  <rect width="32" height="32" rx="6" fill="#05070B"/>
-  <path d="M16 2 L28 7.5 L28 18 Q28 27 16 31 Q4 27 4 18 L4 7.5 Z" fill="#0B111A" stroke="#00E5FF" stroke-width="1.5"/>
-  <text x="7.5" y="22" font-family="Manrope, system-ui" font-size="12" font-weight="800" fill="#00E5FF">SM</text>
+  <rect width="32" height="32" rx="6" fill="#050605"/>
+  <path d="M16 2 L28 7.5 L28 18 Q28 27 16 31 Q4 27 4 18 L4 7.5 Z" fill="#0D0F0D" stroke="#39FF14" stroke-width="1.5"/>
+  <text x="7.5" y="22" font-family="Manrope, system-ui" font-size="12" font-weight="800" fill="#39FF14">SM</text>
 </svg>

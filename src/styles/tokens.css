@@ -1,88 +1,91 @@
 /* ============================================================
-   DESIGN TOKENS — Obsidian Cyber Command Center
+   DESIGN TOKENS — Neon Infrastructure Command Center
    Sharif Madber Portfolio
    ============================================================ */
 
 :root {
   /* ── Colour Palette ── */
-  --color-bg:            #05070B;
-  --color-bg-elevated:   #0B111A;
-  --color-surface:       #111A26;
-  --color-surface-hover: #162334;
-  --color-cyan:          #00E5FF;
-  --color-cyan-dim:      rgba(0, 229, 255, 0.12);
-  --color-cyan-glow:     rgba(0, 229, 255, 0.35);
-  --color-gold:          #D7A84B;
-  --color-gold-dim:      rgba(215, 168, 75, 0.15);
-  --color-green:         #35E6A0;
-  --color-green-dim:     rgba(53, 230, 160, 0.12);
-  --color-text:          #F4F7FA;
-  --color-muted:         #A8B3C4;
-  --color-danger:        #FF6B7A;
-  --color-border:        #263548;
+  --color-bg: #050605;
+  --color-bg-elevated: #0d0f0d;
+  --color-surface: #121512;
+  --color-surface-hover: #181d18;
+  --color-green: #39ff14;
+  --color-green-soft: #89ff76;
+  --color-green-dim: rgba(57, 255, 20, 0.1);
+  --color-green-glow: rgba(57, 255, 20, 0.32);
+  /* Compatibility aliases for legacy components and the 404 page. */
+  --color-cyan: var(--color-green);
+  --color-cyan-dim: var(--color-green-dim);
+  --color-cyan-glow: var(--color-green-glow);
+  --color-gold: #d6e8d2;
+  --color-gold-dim: rgba(214, 232, 210, 0.1);
+  --color-text: #f2f6f1;
+  --color-muted: #8f9a91;
+  --color-danger: #ff6b7a;
+  --color-border: #29312a;
 
   /* ── Semantic ── */
-  --color-link:         var(--color-cyan);
-  --color-focus-ring:   var(--color-cyan);
-  --color-active:       var(--color-cyan);
+  --color-link: var(--color-cyan);
+  --color-focus-ring: var(--color-cyan);
+  --color-active: var(--color-cyan);
 
   /* ── Typography ── */
-  --font-display:  'Manrope Variable', 'Manrope', system-ui, sans-serif;
-  --font-body:     'Manrope Variable', 'Manrope', system-ui, sans-serif;
-  --font-mono:     'IBM Plex Mono', 'Cascadia Code', 'Fira Code', monospace;
+  --font-display: "Space Grotesk", "Manrope", system-ui, sans-serif;
+  --font-body: "Manrope", system-ui, sans-serif;
+  --font-mono: "Fira Code", "IBM Plex Mono", "Cascadia Code", monospace;
 
   /* Type scale */
-  --text-xs:   0.75rem;    /* 12px */
-  --text-sm:   0.875rem;   /* 14px */
-  --text-base: 1rem;       /* 16px */
-  --text-lg:   1.125rem;   /* 18px */
-  --text-xl:   1.25rem;    /* 20px */
-  --text-2xl:  1.5rem;     /* 24px */
-  --text-3xl:  1.875rem;   /* 30px */
-  --text-4xl:  2.25rem;    /* 36px */
-  --text-5xl:  3rem;       /* 48px */
-  --text-6xl:  4rem;       /* 64px */
-  --text-7xl:  5rem;       /* 80px */
+  --text-xs: 0.75rem; /* 12px */
+  --text-sm: 0.875rem; /* 14px */
+  --text-base: 1rem; /* 16px */
+  --text-lg: 1.125rem; /* 18px */
+  --text-xl: 1.25rem; /* 20px */
+  --text-2xl: 1.5rem; /* 24px */
+  --text-3xl: 1.875rem; /* 30px */
+  --text-4xl: 2.25rem; /* 36px */
+  --text-5xl: 3rem; /* 48px */
+  --text-6xl: 4rem; /* 64px */
+  --text-7xl: 5rem; /* 80px */
 
   /* ── Spacing ── */
-  --space-1:   0.25rem;
-  --space-2:   0.5rem;
-  --space-3:   0.75rem;
-  --space-4:   1rem;
-  --space-6:   1.5rem;
-  --space-8:   2rem;
-  --space-10:  2.5rem;
-  --space-12:  3rem;
-  --space-16:  4rem;
-  --space-20:  5rem;
-  --space-24:  6rem;
-  --space-32:  8rem;
-  --space-section-desktop: 7rem;   /* 112px */
-  --space-section-mobile:  4.5rem; /* 72px */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+  --space-24: 6rem;
+  --space-32: 8rem;
+  --space-section-desktop: 7rem; /* 112px */
+  --space-section-mobile: 4.5rem; /* 72px */
 
   /* ── Layout ── */
-  --max-width:        75rem;  /* 1200px */
-  --max-width-prose:  45rem;  /* 720px */
+  --max-width: 88rem; /* 1408px */
+  --max-width-prose: 45rem; /* 720px */
   --page-pad-desktop: 2rem;
-  --page-pad-tablet:  1.5rem;
-  --page-pad-mobile:  1rem;
+  --page-pad-tablet: 1.5rem;
+  --page-pad-mobile: 1rem;
 
   /* ── Borders & Radii ── */
-  --radius-sm:   0.5rem;
-  --radius-md:   0.75rem;
-  --radius-lg:   1rem;
-  --radius-xl:   1.25rem;
-  --radius-card: 1rem;
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.25rem;
+  --radius-card: 0.35rem;
 
   /* ── Transitions ── */
-  --ease-out:    cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
-  --duration-fast:   150ms;
+  --duration-fast: 150ms;
   --duration-normal: 300ms;
-  --duration-slow:   500ms;
+  --duration-slow: 500ms;
 
   /* ── Shadows / Glows ── */
-  --shadow-card:  0 4px 24px rgba(0, 0, 0, 0.5);
-  --glow-cyan:    0 0 24px rgba(0, 229, 255, 0.3);
-  --glow-cyan-lg: 0 0 48px rgba(0, 229, 255, 0.2);
+  --shadow-card: 0 18px 60px rgba(0, 0, 0, 0.46);
+  --glow-cyan: 0 0 24px rgba(57, 255, 20, 0.24);
+  --glow-cyan-lg: 0 0 48px rgba(57, 255, 20, 0.18);
 }

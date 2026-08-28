@@ -4,7 +4,6 @@
 import SEOHead from '../components/layout/SEOHead.astro';
 import Header from '../components/layout/Header.astro';
 import Footer from '../components/layout/Footer.astro';
-import KineticGrid from '../components/KineticGrid';
 
 import '../styles/global.css';
 
@@ -24,21 +23,6 @@ const { title, description, canonicalUrl, ogImage } = Astro.props;
     <SEOHead {title} {description} {canonicalUrl} {ogImage} />
   </head>
   <body>
-    <!-- KineticGrid background — client only, behind all content -->
-    <div id="kinetic-bg" aria-hidden="true">
-      <KineticGrid
-        client:only="react"
-        background="transparent"
-        dotColor="#00E5FF"
-        lineColor="#00E5FF"
-        trailColor="#35E6A0"
-        spacing={40}
-        radius={320}
-        strength={4}
-        trail={true}
-      />
-    </div>
-
     <!-- Skip to main content (accessibility) -->
     <a href="#main" class="skip-link">Skip to main content</a>
 
@@ -50,8 +34,8 @@ const { title, description, canonicalUrl, ogImage } = Astro.props;
 
     <Footer />
 
-    <!-- Scroll reveal observer -->
     <script>
+      document.documentElement.classList.add('js');
       const observer = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
@@ -61,7 +45,7 @@ const { title, description, canonicalUrl, ogImage } = Astro.props;
             }
           });
         },
-        { threshold: 0.1, rootMargin: '0px 0px -60px 0px' }
+        { threshold: 0.08, rootMargin: '0px 0px -8% 0px' }
       );
 
       document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));

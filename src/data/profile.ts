@@ -3,10 +3,10 @@
 // ============================================================
 // OWNER INPUT: Update all fields after verification
 
-import type { PublicationStatus } from './types';
+import type { PublicationStatus } from "./types";
 
 export interface Profile {
-  name: 'Sharif Madber';
+  name: "Sharif Madber";
   professionalTitle: string;
   shortSummary: string;
   longBio?: string;
@@ -18,12 +18,12 @@ export interface Profile {
 }
 
 export const profile: Profile = {
-  name: 'Sharif Madber',
-  professionalTitle: 'Cybersecurity & IT Infrastructure Professional',
+  name: "Sharif Madber",
+  professionalTitle: "Enterprise Infrastructure & Full-Stack Systems Engineer",
   shortSummary:
-    'I explore systems, uncover risks, and build practical security solutions across Linux, networks, and modern infrastructure.',
+    "I design resilient enterprise networks, administer server and storage hardware, and build full-stack systems with an operations-first mindset.",
   longBio:
-    'I focus on practical cybersecurity, resilient infrastructure, and clear technical problem-solving. My work explores how Linux, networks, virtualization, and security tools can be used to solve real operational challenges.',
+    "I work across the full technology stack: physical infrastructure, segmented networks, Linux systems, monitoring, and modern application delivery. The goal is always the same—systems that are clear to operate, secure by design, and built to stay online.",
   // OWNER INPUT: Confirm location before publish
   location: undefined,
   // OWNER INPUT: Set availability status
@@ -32,11 +32,11 @@ export const profile: Profile = {
   portrait: undefined,
   // OWNER INPUT: Add CV PDF path once approved
   cvPath: undefined,
-  status: 'published',
+  status: "published",
 };
 
 export const focusAreas: string[] = [
-  'Cybersecurity',
-  'Linux Systems',
-  'Network & Infrastructure',
+  "Enterprise Networking",
+  "Hardware Administration",
+  "Full-Stack Development",
 ];
