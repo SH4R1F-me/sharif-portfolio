@@ -7,12 +7,12 @@ before the site is published. No sensitive values are stored here.
 
 | Item | Status | Notes |
 |---|---|---|
-| Final professional title | Using provisional: "Cybersecurity & IT Infrastructure Professional" | Owner must confirm |
-| Hero short summary | Using provisional from blueprint | Owner must confirm |
-| About biography | Using provisional from blueprint | Owner must confirm or provide final text |
+| Final professional title | Confirmed from owner CV | Published as "Network Engineer & Cybersecurity Practitioner" |
+| Hero short summary | Confirmed from owner CV | Rewritten and published |
+| About biography | Confirmed from owner CV | Rewritten and published |
 | Public email address | Missing — contact section incomplete | Add to src/data/socials.ts |
-| At least 1 verified project | No projects published | Add to src/data/projects.ts |
-| Skill list confirmation | Using provisional list from blueprint | Owner must confirm all 8 skills |
+| At least 1 verified project | Complete | Noorix Stream and institutional network simulation published |
+| Skill list confirmation | Complete | Four-domain capability matrix published |
 | Custom domain | Unknown | Required for canonical URL, sitemap |
 
 ## OPTIONAL (recommended)
@@ -22,9 +22,9 @@ before the site is published. No sensitive values are stored here.
 | Professional headshot | Not provided — using SM shield placeholder |
 | CV PDF | Not provided — CV button hidden |
 | GitHub profile URL | Not provided |
-| Medium / writing profile | Not provided |
+| Medium / writing profile | Added |
 | WhatsApp contact link | Not provided |
-| Work experience | Not provided — Experience section hidden |
+| Work experience | Added — Makkah, Amber IT, and Global Communication |
 | Education details | Not provided |
 | Certifications | Not provided — section hidden |
 | Project screenshots / repos | Not provided |

@@ -6,31 +6,33 @@ interface Props {
   description?: string;
   canonicalUrl?: string;
   ogImage?: string;
-  type?: 'website' | 'article';
+  type?: "website" | "article";
 }
 
 const {
-  title = 'Sharif Madber — Cybersecurity & IT Infrastructure',
-  description = 'Explore Sharif Madber\'s verified work in cybersecurity, Linux systems, network security, and modern IT infrastructure.',
+  title = "Sharif Madber — Network Engineer & Cybersecurity Practitioner",
+  description = "Network operations, security infrastructure, VAPT practice, and resilient systems from Sharif Madber in Makkah, Saudi Arabia.",
   canonicalUrl = Astro.url.href,
-  ogImage = '/assets/brand/og-image.webp',
-  type = 'website',
+  ogImage = "/assets/brand/og-image.webp",
+  type = "website",
 } = Astro.props;
 
-const siteName = 'Sharif Madber';
+const siteName = "Sharif Madber";
 
 // JSON-LD structured data
 const jsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'ProfilePage',
+  "@context": "https://schema.org",
+  "@type": "ProfilePage",
   mainEntity: {
-    '@type': 'Person',
-    name: 'Sharif Madber',
-    url: Astro.site?.href ?? 'https://sharifmadber.com',
+    "@type": "Person",
+    name: "Sharif Madber",
+    url: Astro.site?.href ?? "https://sharifmadber.com",
     description,
     sameAs: [
-      'https://sa.linkedin.com/in/sharifmadber',
-      // OWNER INPUT: Add verified social profiles
+      "https://tryhackme.com/p/sharifmadber",
+      "https://medium.com/@sharifmadber",
+      "https://www.linkedin.com/in/sharifmadber/",
+      "https://x.com/sharif_madber",
     ],
   },
 };
@@ -44,7 +46,7 @@ const jsonLd = {
 <link rel="canonical" href={canonicalUrl} />
 
 <!-- Theme -->
-<meta name="theme-color" content="#05070B" />
+<meta name="theme-color" content="#050605" />
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
 <!-- Open Graph -->
@@ -52,7 +54,10 @@ const jsonLd = {
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
 <meta property="og:url" content={canonicalUrl} />
-<meta property="og:image" content={new URL(ogImage, Astro.site ?? 'https://sharifmadber.com').href} />
+<meta
+  property="og:image"
+  content={new URL(ogImage, Astro.site ?? "https://sharifmadber.com").href}
+/>
 <meta property="og:site_name" content={siteName} />
 <meta property="og:locale" content="en_US" />
 
@@ -60,11 +65,18 @@ const jsonLd = {
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content={title} />
 <meta name="twitter:description" content={description} />
-<meta name="twitter:image" content={new URL(ogImage, Astro.site ?? 'https://sharifmadber.com').href} />
+<meta
+  name="twitter:image"
+  content={new URL(ogImage, Astro.site ?? "https://sharifmadber.com").href}
+/>
 
 <!-- Preconnects (fonts via CSS @import, no external JS) -->
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
 <!-- JSON-LD Structured Data -->
-<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+<script
+  type="application/ld+json"
+  set:html={JSON.stringify(jsonLd)}
+  is:inline
+/>

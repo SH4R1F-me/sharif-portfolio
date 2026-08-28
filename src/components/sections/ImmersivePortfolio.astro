@@ -1,16 +1,46 @@
 ---
-import { profile } from '../../data/profile';
-import { socialLinks } from '../../data/socials';
+import { profile } from "../../data/profile";
+import { focusAreas } from "../../data/profile";
+import { experience } from "../../data/experience";
+import { projects } from "../../data/projects";
+import { skills, skillCategories } from "../../data/skills";
+import { socialLinks } from "../../data/socials";
 
-const linkedIn = socialLinks.find((link) => link.platform === 'linkedin');
+const linkedIn = socialLinks.find((link) => link.platform === "linkedin");
+const tryHackMe = socialLinks.find((link) => link.platform === "tryhackme");
+const currentRole = experience[0];
+const groupedSkills = skillCategories.map((category) => ({
+  category,
+  items: skills.filter((skill) => skill.category === category),
+}));
+const categorySummaries: Record<string, string> = {
+  "Infrastructure & Hardware":
+    "Deploying and supporting server, virtualization, and surveillance environments built for continuous operation.",
+  "Enterprise Networking":
+    "Designing secure, scalable connectivity across routed, switched, VLAN, firewall, and RF environments.",
+  "Development & Automation":
+    "Building self-hosted, database-driven systems and automation with an infrastructure-aware stack.",
+  "Monitoring & Security":
+    "Turning continuous monitoring, threat analysis, and authorized testing into actionable security decisions.",
+};
+const formatDate = (value?: string) =>
+  value
+    ? new Intl.DateTimeFormat("en", {
+        month: "short",
+        year: "numeric",
+        timeZone: "UTC",
+      })
+        .format(new Date(`${value}-01T00:00:00Z`))
+        .toUpperCase()
+    : "PRESENT";
 
 const scenes = [
-  { id: 'hero', label: 'Overview', code: '00' },
-  { id: 'infrastructure', label: 'Hardware', code: '01' },
-  { id: 'networking', label: 'Network', code: '02' },
-  { id: 'development', label: 'Development', code: '03' },
-  { id: 'monitoring', label: 'Monitoring', code: '04' },
-  { id: 'contact', label: 'Contact', code: '05' },
+  { id: "hero", label: "Overview", code: "00" },
+  { id: "about", label: "Profile", code: "01" },
+  { id: "skills", label: "Matrix", code: "02" },
+  { id: "experience", label: "Operations", code: "03" },
+  { id: "projects", label: "Proof", code: "04" },
+  { id: "contact", label: "Contact", code: "05" },
 ];
 ---
 
@@ -27,16 +57,24 @@ const scenes = [
   </div>
 
   <aside class="scene-rail" aria-label="Experience sections">
-    <div class="rail-track" aria-hidden="true"><span id="rail-progress"></span></div>
+    <div class="rail-track" aria-hidden="true">
+      <span id="rail-progress"></span>
+    </div>
     <ol>
-      {scenes.map((scene, index) => (
-        <li>
-          <a href={`#${scene.id}`} data-scene-link={index} aria-label={`Go to ${scene.label}`}>
-            <span class="rail-code">{scene.code}</span>
-            <span class="rail-label">{scene.label}</span>
-          </a>
-        </li>
-      ))}
+      {
+        scenes.map((scene, index) => (
+          <li>
+            <a
+              href={`#${scene.id}`}
+              data-scene-link={index}
+              aria-label={`Go to ${scene.label}`}
+            >
+              <span class="rail-code">{scene.code}</span>
+              <span class="rail-label">{scene.label}</span>
+            </a>
+          </li>
+        ))
+      }
     </ol>
   </aside>
 
@@ -47,33 +85,67 @@ const scenes = [
     <span>LIVE</span>
   </div>
 
-  <section id="hero" class="scene-section hero-scene" data-scene-index="0" aria-labelledby="hero-heading">
+  <section
+    id="hero"
+    class="scene-section hero-scene"
+    data-scene-index="0"
+    aria-labelledby="hero-heading"
+  >
     <div class="scene-container scene-left">
       <div class="scene-copy hero-copy reveal">
-        <p class="scene-kicker"><span>SYS.00</span> Infrastructure engineer & developer</p>
+        <p class="scene-kicker">
+          <span>SYS.00</span>
+          {profile.professionalTitle}
+        </p>
         <h1 id="hero-heading">
-          Engineering systems<br />
-          <span class="neon-type" data-text="THAT STAY ONLINE.">that stay online.</span>
+          {profile.heroLead}<br />
+          <span class="neon-type" data-text={profile.heroAccent.toUpperCase()}
+            >{profile.heroAccent}</span
+          >
         </h1>
         <p class="hero-lede">
           {profile.shortSummary}
         </p>
 
         <div class="hero-actions">
-          <a class="action action-primary" href="#infrastructure">
-            Explore the system <span aria-hidden="true">↘</span>
+          <a class="action action-primary" href="#about">
+            Enter the network <span aria-hidden="true">↘</span>
           </a>
-          {linkedIn && (
-            <a class="action action-ghost" href={linkedIn.url} target="_blank" rel="noopener noreferrer">
-              LinkedIn <span aria-hidden="true">↗</span>
-            </a>
-          )}
+          {
+            linkedIn && (
+              <a
+                class="action action-ghost"
+                href={linkedIn.url}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                LinkedIn <span aria-hidden="true">↗</span>
+              </a>
+            )
+          }
         </div>
 
         <div class="hero-capabilities" aria-label="Core capabilities">
-          <div><span>01</span><strong>Enterprise networking</strong><small>VLAN · VPN · 10G</small></div>
-          <div><span>02</span><strong>Hardware operations</strong><small>RAID · Linux · Storage</small></div>
-          <div><span>03</span><strong>Full-stack systems</strong><small>Next.js · NestJS · AI</small></div>
+          <div>
+            <span>01</span><strong>Infrastructure</strong><small
+              >Servers · VM · CCTV</small
+            >
+          </div>
+          <div>
+            <span>02</span><strong>Networking</strong><small
+              >Cisco · VLAN · RF</small
+            >
+          </div>
+          <div>
+            <span>03</span><strong>Development</strong><small
+              >Next.js · Python · Bash</small
+            >
+          </div>
+          <div>
+            <span>04</span><strong>Security</strong><small
+              >VAPT · THM Top 6%</small
+            >
+          </div>
         </div>
       </div>
 
@@ -84,121 +156,257 @@ const scenes = [
     </div>
   </section>
 
-  <section id="infrastructure" class="scene-section" data-scene-index="1" aria-labelledby="infrastructure-heading">
+  <section
+    id="about"
+    class="scene-section"
+    data-scene-index="1"
+    aria-labelledby="about-heading"
+  >
     <div class="scene-container scene-left">
       <article class="scene-copy glass-panel reveal">
-        <div class="panel-index"><span>01</span><span>HARDWARE PLANE</span></div>
-        <p class="scene-kicker"><span>RACK.STATUS</span> Operational</p>
-        <h2 id="infrastructure-heading">Bare metal.<br /><em>Clean signal.</em></h2>
+        <div class="panel-index">
+          <span>01</span><span>OPERATOR PROFILE</span>
+        </div>
+        <p class="scene-kicker">
+          <span>IDENTITY.VERIFIED</span> Operations-first
+        </p>
+        <h2 id="about-heading">
+          Built in operations.<br /><em>Driven by security.</em>
+        </h2>
         <p class="scene-description">
-          Enterprise server and storage administration designed around serviceability, observable health, and resilient data paths—from Dell and Lenovo class hardware to Linux hosts and RAID-backed storage.
+          {profile.longBio}
         </p>
 
         <dl class="spec-grid">
-          <div><dt>Compute</dt><dd>Rack servers · Linux</dd></div>
-          <div><dt>Storage</dt><dd>RAID · Health monitoring</dd></div>
-          <div><dt>Uplinks</dt><dd>10G SFP+ fabric</dd></div>
-          <div><dt>Method</dt><dd>Documented operations</dd></div>
+          <div><dt>Base</dt><dd>{profile.location}</dd></div>
+          <div><dt>Field experience</dt><dd>Saudi Arabia · Bangladesh</dd></div>
+          <div><dt>Operating mode</dt><dd>Monitor · Diagnose · Harden</dd></div>
+          <div><dt>Status</dt><dd>{profile.availability}</dd></div>
         </dl>
 
-        <div class="signal-row" aria-label="Infrastructure topics">
-          <span>iDRAC / XClarity</span><span>RAID</span><span>Virtualization</span><span>Linux</span>
+        <div class="signal-row" aria-label="Professional focus areas">
+          {focusAreas.map((area) => <span>{area}</span>)}
         </div>
       </article>
     </div>
   </section>
 
-  <section id="networking" class="scene-section" data-scene-index="2" aria-labelledby="networking-heading">
+  <section
+    id="skills"
+    class="scene-section"
+    data-scene-index="2"
+    aria-labelledby="skills-heading"
+  >
     <div class="scene-container scene-right">
-      <article class="scene-copy glass-panel reveal">
-        <div class="panel-index"><span>02</span><span>NETWORK FABRIC</span></div>
-        <p class="scene-kicker"><span>ROUTE.TABLE</span> Converged</p>
-        <h2 id="networking-heading">Traffic, segmented<br /><em>by design.</em></h2>
+      <article class="scene-copy glass-panel matrix-panel reveal">
+        <div class="panel-index">
+          <span>02</span><span>CAPABILITY MATRIX</span>
+        </div>
+        <p class="scene-kicker"><span>STACK.INDEX</span> Hands-on capability</p>
+        <h2 id="skills-heading">
+          From bare metal<br /><em>to attack surface.</em>
+        </h2>
         <p class="scene-description">
-          Managed switching, intentional VLAN boundaries, secure VPN routing, and fiber uplinks engineered as one understandable system—not a collection of disconnected boxes.
+          A field-tested stack spanning network operations, defensive analysis,
+          system support, and practical automation.
         </p>
 
-        <div class="route-table" aria-label="Network architecture example">
-          <div class="route-head"><span>SEGMENT</span><span>POLICY</span><span>STATE</span></div>
-          <div><span>CORE / 10G</span><span>TRUNK</span><strong>ACTIVE</strong></div>
-          <div><span>SERVERS / VLAN 20</span><span>ISOLATED</span><strong>ACTIVE</strong></div>
-          <div><span>CCTV / VLAN 40</span><span>RESTRICTED</span><strong>ACTIVE</strong></div>
-          <div><span>REMOTE / VPN</span><span>ENCRYPTED</span><strong>READY</strong></div>
-        </div>
-
-        <div class="signal-row">
-          <span>Managed switching</span><span>VLAN</span><span>VPN</span><span>Firewall</span>
+        <div class="skill-matrix" aria-label="Technical skill matrix">
+          {
+            groupedSkills.map((group, index) => (
+              <section
+                class="matrix-cell"
+                aria-labelledby={`skill-group-${index}`}
+              >
+                <div class="matrix-cell-head">
+                  <span>{String(index + 1).padStart(2, "0")}</span>
+                  <h3 id={`skill-group-${index}`}>{group.category}</h3>
+                </div>
+                <p>{categorySummaries[group.category]}</p>
+                <ul role="list">
+                  {group.items.map((skill) => (
+                    <li>{skill.name}</li>
+                  ))}
+                </ul>
+              </section>
+            ))
+          }
         </div>
       </article>
     </div>
   </section>
 
-  <section id="development" class="scene-section" data-scene-index="3" aria-labelledby="development-heading">
+  <section
+    id="experience"
+    class="scene-section"
+    data-scene-index="3"
+    aria-labelledby="experience-heading"
+  >
     <div class="scene-container scene-left">
       <article class="scene-copy glass-panel reveal">
-        <div class="panel-index"><span>03</span><span>DEVELOPMENT + AI</span></div>
-        <p class="scene-kicker"><span>BUILD.PIPELINE</span> Passing</p>
-        <h2 id="development-heading">Code with an<br /><em>infrastructure mindset.</em></h2>
-        <p class="scene-description">
-          Full-stack applications built with awareness of deployment, observability, security boundaries, and the Linux systems underneath them—plus practical local AI workflows where data control matters.
-        </p>
-
-        <div class="terminal-card" aria-label="Development stack terminal preview">
-          <div class="terminal-bar"><i></i><i></i><i></i><span>sharif@ops:~/platform</span></div>
-          <pre><code><span class="prompt">$</span> pnpm deploy:check
-<span class="muted">→</span> next.js frontend       <b>ready</b>
-<span class="muted">→</span> nestjs api            <b>healthy</b>
-<span class="muted">→</span> postgres schema       <b>synced</b>
-<span class="muted">→</span> local ai worker       <b>online</b></code></pre>
+        <div class="panel-index">
+          <span>03</span><span>LIVE OPERATIONS</span>
         </div>
+        <p class="scene-kicker"><span>SHIFT.STATUS</span> Makkah · Active</p>
+        <h2 id="experience-heading">
+          Operate the system.<br /><em>Own the incident.</em>
+        </h2>
 
-        <div class="signal-row">
-          <span>TypeScript</span><span>Next.js</span><span>NestJS</span><span>PostgreSQL</span><span>Local AI</span>
+        {
+          currentRole && (
+            <div class="role-console">
+              <div class="role-console-head">
+                <div>
+                  <span>
+                    {formatDate(currentRole.startDate)} —{" "}
+                    {formatDate(currentRole.endDate)}
+                  </span>
+                  <h3>{currentRole.role}</h3>
+                  <p>
+                    {currentRole.organization} · {currentRole.location}
+                  </p>
+                </div>
+                <strong>ON DUTY</strong>
+              </div>
+              <ul role="list">
+                {currentRole.bullets.map((bullet) => (
+                  <li>{bullet}</li>
+                ))}
+              </ul>
+            </div>
+          )
+        }
+
+        <div class="career-path" aria-label="Previous operational experience">
+          {
+            experience.slice(1).map((item) => (
+              <div>
+                <span>
+                  {formatDate(item.startDate)} — {formatDate(item.endDate)}
+                </span>
+                <strong>{item.role}</strong>
+                <small>
+                  {item.organization} · {item.location}
+                </small>
+              </div>
+            ))
+          }
         </div>
       </article>
     </div>
   </section>
 
-  <section id="monitoring" class="scene-section" data-scene-index="4" aria-labelledby="monitoring-heading">
+  <section
+    id="projects"
+    class="scene-section"
+    data-scene-index="4"
+    aria-labelledby="projects-heading"
+  >
     <div class="scene-container scene-right">
-      <article class="scene-copy glass-panel reveal">
-        <div class="panel-index"><span>04</span><span>CENTRAL OPERATIONS</span></div>
-        <p class="scene-kicker"><span>VISION.CORE</span> Monitoring</p>
-        <h2 id="monitoring-heading">One operational<br /><em>picture.</em></h2>
-        <p class="scene-description">
-          Centralized NVR and CCTV management connected to the same disciplined network model: isolated video traffic, clear retention planning, and a monitoring surface designed for rapid decisions.
+      <article class="scene-copy glass-panel proof-panel reveal">
+        <div class="panel-index"><span>04</span><span>PROOF OF WORK</span></div>
+        <p class="scene-kicker">
+          <span>EVIDENCE.LOG</span> Labs · Systems · Simulations
         </p>
+        <h2 id="projects-heading">
+          Practice measured.<br /><em>Systems modeled.</em>
+        </h2>
 
-        <div class="monitor-grid" aria-label="Monitoring system states">
-          <div><span>CAM / 01</span><strong>LIVE</strong><i></i></div>
-          <div><span>CAM / 02</span><strong>LIVE</strong><i></i></div>
-          <div><span>CAM / 03</span><strong>LIVE</strong><i></i></div>
-          <div><span>NVR / A</span><strong>REC</strong><i></i></div>
-        </div>
+        <div class="proof-grid">
+          <article class="proof-card proof-card-featured">
+            <div class="proof-card-head">
+              <span>SECURITY LABS</span><strong>TOP 6%</strong>
+            </div>
+            <h3>TryHackMe</h3>
+            <p>
+              Consistent hands-on practice across offensive, defensive, Windows,
+              Linux, web, OSINT, and forensics labs.
+            </p>
+            <dl class="metric-grid">
+              <div><dt>42</dt><dd>Level</dd></div>
+              <div><dt>75</dt><dd>Rooms</dd></div>
+              <div><dt>11</dt><dd>Badges</dd></div>
+            </dl>
+            {
+              tryHackMe && (
+                <a
+                  href={tryHackMe.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  View verified profile <span aria-hidden="true">↗</span>
+                </a>
+              )
+            }
+          </article>
 
-        <div class="signal-row">
-          <span>NVR</span><span>CCTV</span><span>Central video</span><span>Retention</span>
+          {
+            projects.map((project) => (
+              <article class="proof-card">
+                <div class="proof-card-head">
+                  <>
+                    <span>{project.category}</span>
+                    <strong>PROJECT</strong>
+                  </>
+                </div>
+                <h3>{project.title}</h3>
+                <p>{project.summary}</p>
+                <ul role="list">
+                  <li>{project.approach[0]}</li>
+                  <li>{project.outcomes[0]}</li>
+                </ul>
+                <div class="signal-row">
+                  {project.tools.slice(0, 4).map((tool) => (
+                    <span>{tool}</span>
+                  ))}
+                </div>
+              </article>
+            ))
+          }
         </div>
       </article>
     </div>
   </section>
 
-  <section id="contact" class="scene-section contact-scene" data-scene-index="5" aria-labelledby="contact-heading">
+  <section
+    id="contact"
+    class="scene-section contact-scene"
+    data-scene-index="5"
+    aria-labelledby="contact-heading"
+  >
     <div class="scene-container scene-center">
       <article class="contact-panel reveal">
-        <p class="scene-kicker"><span>LINK.OPEN</span> Available for technical conversations</p>
-        <h2 id="contact-heading">Build something<br /><span class="neon-type">resilient.</span></h2>
-        <p>
-          If you need someone who can move between the rack, the network, and the codebase, let’s start a focused conversation.
+        <p class="scene-kicker">
+          <span>LINK.OPEN</span> Makkah · Ready to connect
         </p>
-        {linkedIn && (
-          <a class="action action-primary contact-action" href={linkedIn.url} target="_blank" rel="noopener noreferrer">
-            Connect on LinkedIn <span aria-hidden="true">↗</span>
-          </a>
-        )}
-        <div class="contact-meta">
-          <span>Enterprise networking</span><span>Hardware operations</span><span>Full-stack systems</span>
+        <h2 id="contact-heading">
+          Open a<br /><span class="neon-type" data-text="SECURE CHANNEL."
+            >secure channel.</span
+          >
+        </h2>
+        <p>
+          Let’s talk network operations, resilient infrastructure, defensive
+          security, or the next system worth hardening.
+        </p>
+        <div class="social-grid" aria-label="Professional profile links">
+          {
+            socialLinks.map((link) => (
+              <a
+                href={link.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`${link.label} profile — opens in new tab`}
+              >
+                <span>{link.label}</span>
+                <small>{link.handle}</small>
+                <strong aria-hidden="true">↗</strong>
+              </a>
+            ))
+          }
         </div>
+        <p class="availability-line">
+          <i aria-hidden="true"></i>{profile.availability}
+        </p>
       </article>
     </div>
   </section>
@@ -207,49 +415,63 @@ const scenes = [
 <script>
   type SceneController = { destroy: () => void };
 
-  const root = document.getElementById('experience-root');
-  const host = document.getElementById('infrastructure-canvas');
-  const fallback = document.getElementById('scene-fallback');
-  const hudScene = document.getElementById('hud-scene');
-  const railProgress = document.getElementById('rail-progress');
-  const sections = Array.from(document.querySelectorAll<HTMLElement>('[data-scene-index]'));
-  const links = Array.from(document.querySelectorAll<HTMLElement>('[data-scene-link]'));
-  const labels = ['SYSTEM OVERVIEW', 'HARDWARE PLANE', 'NETWORK FABRIC', 'DEVELOPMENT + AI', 'CENTRAL OPERATIONS', 'SECURE CONTACT'];
+  const root = document.getElementById("experience-root");
+  const host = document.getElementById("infrastructure-canvas");
+  const fallback = document.getElementById("scene-fallback");
+  const hudScene = document.getElementById("hud-scene");
+  const railProgress = document.getElementById("rail-progress");
+  const sections = Array.from(
+    document.querySelectorAll<HTMLElement>("[data-scene-index]"),
+  );
+  const links = Array.from(
+    document.querySelectorAll<HTMLElement>("[data-scene-link]"),
+  );
+  const labels = [
+    "SYSTEM OVERVIEW",
+    "OPERATOR PROFILE",
+    "CAPABILITY MATRIX",
+    "LIVE OPERATIONS",
+    "PROOF OF WORK",
+    "SECURE CONTACT",
+  ];
   let controller: SceneController | null = null;
 
   function hasWebGL() {
     try {
-      const canvas = document.createElement('canvas');
-      return Boolean(canvas.getContext('webgl2') || canvas.getContext('webgl'));
+      const canvas = document.createElement("canvas");
+      return Boolean(canvas.getContext("webgl2") || canvas.getContext("webgl"));
     } catch {
       return false;
     }
   }
 
   function shouldUseLiteMode() {
-    return localStorage.getItem('sm-lite-mode') === 'true' ||
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    return (
+      localStorage.getItem("sm-lite-mode") === "true" ||
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    );
   }
 
   async function startScene() {
     controller?.destroy();
     controller = null;
     if (!root || !host || shouldUseLiteMode() || !hasWebGL()) {
-      root?.classList.add('scene-is-lite');
-      fallback?.classList.add('is-visible');
+      root?.classList.add("scene-is-lite");
+      fallback?.classList.add("is-visible");
       return;
     }
 
     try {
-      root.classList.remove('scene-is-lite');
-      const { createInfrastructureScene } = await import('../three/InfrastructureScene');
+      root.classList.remove("scene-is-lite");
+      const { createInfrastructureScene } =
+        await import("../three/InfrastructureScene");
       controller = createInfrastructureScene(host);
-      root.classList.add('scene-is-ready');
-      fallback?.classList.remove('is-visible');
+      root.classList.add("scene-is-ready");
+      fallback?.classList.remove("is-visible");
     } catch (error) {
-      console.error('Infrastructure scene failed to initialize', error);
-      root.classList.add('scene-is-lite');
-      fallback?.classList.add('is-visible');
+      console.error("Infrastructure scene failed to initialize", error);
+      root.classList.add("scene-is-lite");
+      fallback?.classList.add("is-visible");
     }
   }
 
@@ -259,24 +481,31 @@ const scenes = [
     sections.forEach((section, index) => {
       if (center >= section.offsetTop) active = index;
     });
-    links.forEach((link, index) => link.classList.toggle('is-active', index === active));
+    links.forEach((link, index) =>
+      link.classList.toggle("is-active", index === active),
+    );
     if (hudScene) hudScene.textContent = labels[active] ?? labels[0];
-    if (railProgress) railProgress.style.height = `${(active / Math.max(1, sections.length - 1)) * 100}%`;
+    if (railProgress)
+      railProgress.style.height = `${(active / Math.max(1, sections.length - 1)) * 100}%`;
   }
 
   let interfaceFrame = 0;
-  window.addEventListener('scroll', () => {
-    cancelAnimationFrame(interfaceFrame);
-    interfaceFrame = requestAnimationFrame(updateInterface);
-  }, { passive: true });
+  window.addEventListener(
+    "scroll",
+    () => {
+      cancelAnimationFrame(interfaceFrame);
+      interfaceFrame = requestAnimationFrame(updateInterface);
+    },
+    { passive: true },
+  );
 
-  window.addEventListener('litemode', (event) => {
+  window.addEventListener("litemode", (event) => {
     const lite = (event as CustomEvent<{ lite: boolean }>).detail.lite;
     if (lite) {
       controller?.destroy();
       controller = null;
-      root?.classList.add('scene-is-lite');
-      fallback?.classList.add('is-visible');
+      root?.classList.add("scene-is-lite");
+      fallback?.classList.add("is-visible");
     } else {
       startScene();
     }
@@ -298,7 +527,11 @@ const scenes = [
     z-index: -1;
     overflow: hidden;
     background:
-      radial-gradient(circle at 68% 42%, rgba(57, 255, 20, 0.055), transparent 31rem),
+      radial-gradient(
+        circle at 68% 42%,
+        rgba(57, 255, 20, 0.055),
+        transparent 31rem
+      ),
       linear-gradient(145deg, #0b0d0b 0%, #050605 52%, #0d100d 100%);
   }
 
@@ -307,7 +540,9 @@ const scenes = [
     inset: 0;
     opacity: 0;
     transform: scale(1.015);
-    transition: opacity 1s var(--ease-out), transform 1.4s var(--ease-out);
+    transition:
+      opacity 1s var(--ease-out),
+      transform 1.4s var(--ease-out);
   }
 
   .scene-is-ready .scene-canvas {
@@ -326,8 +561,17 @@ const scenes = [
     inset: 0;
     pointer-events: none;
     background:
-      linear-gradient(90deg, rgba(5, 6, 5, 0.82) 0%, rgba(5, 6, 5, 0.2) 40%, transparent 63%),
-      radial-gradient(ellipse at center, transparent 36%, rgba(3, 4, 3, 0.66) 100%);
+      linear-gradient(
+        90deg,
+        rgba(5, 6, 5, 0.82) 0%,
+        rgba(5, 6, 5, 0.2) 40%,
+        transparent 63%
+      ),
+      radial-gradient(
+        ellipse at center,
+        transparent 36%,
+        rgba(3, 4, 3, 0.66) 100%
+      );
   }
 
   .scene-fallback {
@@ -341,7 +585,9 @@ const scenes = [
     transition: opacity 500ms ease;
   }
 
-  .scene-fallback.is-visible { opacity: 0.75; }
+  .scene-fallback.is-visible {
+    opacity: 0.75;
+  }
 
   .fallback-rack {
     position: absolute;
@@ -352,8 +598,14 @@ const scenes = [
     transform: translate(-50%, -50%) perspective(700px) rotateY(-12deg);
     padding: 8%;
     border: 1px solid rgba(57, 255, 20, 0.38);
-    background: linear-gradient(145deg, rgba(57, 255, 20, 0.05), rgba(0, 0, 0, 0.5));
-    box-shadow: inset 0 0 30px rgba(57, 255, 20, 0.06), 0 0 60px rgba(57, 255, 20, 0.08);
+    background: linear-gradient(
+      145deg,
+      rgba(57, 255, 20, 0.05),
+      rgba(0, 0, 0, 0.5)
+    );
+    box-shadow:
+      inset 0 0 30px rgba(57, 255, 20, 0.06),
+      0 0 60px rgba(57, 255, 20, 0.08);
   }
 
   .fallback-rack span {
@@ -366,7 +618,7 @@ const scenes = [
   }
 
   .fallback-rack span::after {
-    content: '';
+    content: "";
     position: absolute;
     right: 7%;
     top: 50%;
@@ -394,11 +646,16 @@ const scenes = [
   }
 
   .scene-section::before {
-    content: '';
+    content: "";
     position: absolute;
     inset: 0;
     pointer-events: none;
-    background: linear-gradient(180deg, transparent, rgba(5, 6, 5, 0.12) 55%, transparent);
+    background: linear-gradient(
+      180deg,
+      transparent,
+      rgba(5, 6, 5, 0.12) 55%,
+      transparent
+    );
   }
 
   .scene-container {
@@ -409,15 +666,24 @@ const scenes = [
     z-index: 2;
   }
 
-  .scene-left { justify-content: flex-start; }
-  .scene-right { justify-content: flex-end; }
-  .scene-center { justify-content: center; text-align: center; }
+  .scene-left {
+    justify-content: flex-start;
+  }
+  .scene-right {
+    justify-content: flex-end;
+  }
+  .scene-center {
+    justify-content: center;
+    text-align: center;
+  }
 
   .scene-copy {
     width: min(48rem, 53vw);
   }
 
-  .hero-scene { min-height: 100svh; }
+  .hero-scene {
+    min-height: 100svh;
+  }
 
   .hero-copy {
     width: min(56rem, 62vw);
@@ -438,14 +704,16 @@ const scenes = [
   }
 
   .scene-kicker::before {
-    content: '';
+    content: "";
     width: 2.4rem;
     height: 1px;
     background: var(--color-green);
     box-shadow: 0 0 10px rgba(57, 255, 20, 0.6);
   }
 
-  .scene-kicker span { color: var(--color-green); }
+  .scene-kicker span {
+    color: var(--color-green);
+  }
 
   h1 {
     max-width: 13ch;
@@ -504,7 +772,11 @@ const scenes = [
     letter-spacing: 0.08em;
     text-decoration: none;
     text-transform: uppercase;
-    transition: transform 180ms ease, border-color 180ms ease, background 180ms ease, box-shadow 180ms ease;
+    transition:
+      transform 180ms ease,
+      border-color 180ms ease,
+      background 180ms ease,
+      box-shadow 180ms ease;
   }
 
   .action-primary {
@@ -525,11 +797,13 @@ const scenes = [
     backdrop-filter: blur(12px);
   }
 
-  .action-ghost:hover { border-color: rgba(57, 255, 20, 0.6); }
+  .action-ghost:hover {
+    border-color: rgba(57, 255, 20, 0.6);
+  }
 
   .hero-capabilities {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     max-width: 48rem;
     margin-top: 4.5rem;
     border-top: 1px solid rgba(255, 255, 255, 0.12);
@@ -590,14 +864,20 @@ const scenes = [
     position: relative;
     padding: clamp(1.5rem, 3vw, 3rem);
     border: 1px solid rgba(255, 255, 255, 0.12);
-    background: linear-gradient(145deg, rgba(14, 17, 14, 0.86), rgba(7, 9, 7, 0.66));
-    box-shadow: 0 30px 90px rgba(0, 0, 0, 0.32), inset 0 1px rgba(255, 255, 255, 0.04);
+    background: linear-gradient(
+      145deg,
+      rgba(14, 17, 14, 0.86),
+      rgba(7, 9, 7, 0.66)
+    );
+    box-shadow:
+      0 30px 90px rgba(0, 0, 0, 0.32),
+      inset 0 1px rgba(255, 255, 255, 0.04);
     backdrop-filter: blur(22px) saturate(120%);
   }
 
   .glass-panel::before,
   .glass-panel::after {
-    content: '';
+    content: "";
     position: absolute;
     width: 2.8rem;
     height: 2.8rem;
@@ -732,7 +1012,253 @@ const scenes = [
     letter-spacing: 0.14em;
   }
 
-  .route-table strong { color: var(--color-green); font-weight: 500; }
+  .route-table strong {
+    color: var(--color-green);
+    font-weight: 500;
+  }
+
+  .matrix-panel,
+  .proof-panel {
+    width: min(72rem, 76vw);
+  }
+
+  .skill-matrix {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1px;
+    margin-top: 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  .matrix-cell {
+    min-width: 0;
+    padding: 1.15rem;
+    background: rgba(5, 8, 5, 0.84);
+  }
+
+  .matrix-cell-head {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    margin-bottom: 0.9rem;
+  }
+
+  .matrix-cell-head span {
+    color: var(--color-green);
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+  }
+
+  .matrix-cell h3 {
+    margin: 0;
+    color: #e0e6e1;
+    font-size: 0.78rem;
+    line-height: 1.3;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .matrix-cell > p {
+    margin: 0 0 0.9rem;
+    color: #7f8a81;
+    font-size: 0.62rem;
+    line-height: 1.55;
+  }
+
+  .matrix-cell ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.42rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .matrix-cell li {
+    padding: 0.38rem 0.5rem;
+    border: 1px solid rgba(57, 255, 20, 0.14);
+    color: #95a097;
+    font-family: var(--font-mono);
+    font-size: 0.56rem;
+    line-height: 1.35;
+  }
+
+  .role-console {
+    margin-top: 2rem;
+    border: 1px solid rgba(57, 255, 20, 0.2);
+    background: rgba(2, 5, 2, 0.86);
+  }
+
+  .role-console-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem 1.1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .role-console-head span,
+  .career-path span {
+    color: var(--color-green);
+    font-family: var(--font-mono);
+    font-size: 0.55rem;
+    letter-spacing: 0.08em;
+  }
+
+  .role-console h3 {
+    margin: 0.32rem 0 0.18rem;
+    font-size: 1.1rem;
+    letter-spacing: -0.01em;
+  }
+
+  .role-console-head p,
+  .career-path small {
+    color: #7f8981;
+    font-size: 0.67rem;
+    line-height: 1.5;
+  }
+
+  .role-console-head > strong {
+    height: fit-content;
+    padding: 0.35rem 0.5rem;
+    border: 1px solid rgba(57, 255, 20, 0.3);
+    color: var(--color-green);
+    font-family: var(--font-mono);
+    font-size: 0.55rem;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+  }
+
+  .role-console ul,
+  .proof-card ul {
+    margin: 0;
+    padding: 1rem 1.1rem 1rem 2rem;
+  }
+
+  .role-console li,
+  .proof-card li {
+    margin-block: 0.42rem;
+    color: #aeb7af;
+    font-size: 0.72rem;
+    line-height: 1.55;
+  }
+
+  .role-console li::marker,
+  .proof-card li::marker {
+    color: var(--color-green);
+  }
+
+  .career-path {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1px;
+    margin-top: 0.75rem;
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  .career-path > div {
+    display: grid;
+    gap: 0.3rem;
+    padding: 0.9rem 1rem;
+    background: rgba(7, 10, 7, 0.82);
+  }
+
+  .career-path strong {
+    color: #dce2dd;
+    font-size: 0.72rem;
+    line-height: 1.35;
+  }
+
+  .proof-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.7rem;
+    margin-top: 2rem;
+  }
+
+  .proof-card {
+    min-width: 0;
+    padding: 1.1rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(5, 8, 5, 0.86);
+  }
+
+  .proof-card-featured {
+    border-color: rgba(57, 255, 20, 0.34);
+  }
+
+  .proof-card-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.65rem;
+    color: #6f7971;
+    font-family: var(--font-mono);
+    font-size: 0.52rem;
+    letter-spacing: 0.08em;
+  }
+
+  .proof-card-head strong {
+    color: var(--color-green);
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  .proof-card h3 {
+    margin: 1.25rem 0 0.7rem;
+    color: #e1e7e2;
+    font-size: 1.15rem;
+    letter-spacing: -0.02em;
+  }
+
+  .proof-card > p {
+    color: #95a097;
+    font-size: 0.7rem;
+    line-height: 1.6;
+  }
+
+  .proof-card > a {
+    display: inline-flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    color: var(--color-green);
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  .proof-card .signal-row {
+    margin-top: 1rem;
+  }
+  .proof-card .signal-row span {
+    font-size: 0.48rem;
+  }
+
+  .metric-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    margin-top: 1rem;
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  .metric-grid div {
+    padding: 0.7rem 0.35rem;
+    background: #070a07;
+    text-align: center;
+  }
+  .metric-grid dt {
+    color: var(--color-green);
+    font-family: var(--font-mono);
+    font-size: 1rem;
+  }
+  .metric-grid dd {
+    color: #788179;
+    font-family: var(--font-mono);
+    font-size: 0.5rem;
+    text-transform: uppercase;
+  }
 
   .terminal-card {
     margin-top: 2rem;
@@ -759,8 +1285,13 @@ const scenes = [
     background: #293029;
   }
 
-  .terminal-bar i:first-child { background: var(--color-green); box-shadow: 0 0 8px rgba(57, 255, 20, 0.5); }
-  .terminal-bar span { margin-left: auto; }
+  .terminal-bar i:first-child {
+    background: var(--color-green);
+    box-shadow: 0 0 8px rgba(57, 255, 20, 0.5);
+  }
+  .terminal-bar span {
+    margin-left: auto;
+  }
 
   .terminal-card pre {
     overflow-x: auto;
@@ -772,8 +1303,13 @@ const scenes = [
   }
 
   .terminal-card .prompt,
-  .terminal-card b { color: var(--color-green); font-weight: 500; }
-  .terminal-card .muted { color: #4e5a50; }
+  .terminal-card b {
+    color: var(--color-green);
+    font-weight: 500;
+  }
+  .terminal-card .muted {
+    color: #4e5a50;
+  }
 
   .monitor-grid {
     display: grid;
@@ -790,13 +1326,24 @@ const scenes = [
     border: 1px solid rgba(255, 255, 255, 0.09);
     background:
       linear-gradient(180deg, transparent 50%, rgba(57, 255, 20, 0.06)),
-      repeating-linear-gradient(0deg, transparent, transparent 4px, rgba(57, 255, 20, 0.025) 5px);
+      repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 4px,
+        rgba(57, 255, 20, 0.025) 5px
+      );
     font-family: var(--font-mono);
     font-size: 0.58rem;
   }
 
-  .monitor-grid span { color: #69736b; }
-  .monitor-grid strong { float: right; color: var(--color-green); font-size: inherit; }
+  .monitor-grid span {
+    color: #69736b;
+  }
+  .monitor-grid strong {
+    float: right;
+    color: var(--color-green);
+    font-size: inherit;
+  }
 
   .monitor-grid i {
     position: absolute;
@@ -804,29 +1351,53 @@ const scenes = [
     right: 10%;
     top: 50%;
     height: 1px;
-    background: linear-gradient(90deg, transparent, var(--color-green), transparent);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      var(--color-green),
+      transparent
+    );
     opacity: 0.35;
     animation: scan 3s linear infinite;
   }
 
   @keyframes scan {
-    0% { transform: translateY(-2rem); opacity: 0; }
-    20%, 80% { opacity: 0.4; }
-    100% { transform: translateY(2rem); opacity: 0; }
+    0% {
+      transform: translateY(-2rem);
+      opacity: 0;
+    }
+    20%,
+    80% {
+      opacity: 0.4;
+    }
+    100% {
+      transform: translateY(2rem);
+      opacity: 0;
+    }
   }
 
-  .contact-scene { min-height: 100svh; }
+  .contact-scene {
+    min-height: 100svh;
+  }
 
   .contact-panel {
     width: min(62rem, 90vw);
     padding: clamp(2rem, 5vw, 5rem);
-    background: radial-gradient(circle at 50% 0%, rgba(57, 255, 20, 0.08), rgba(5, 7, 5, 0.88) 55%);
+    background: radial-gradient(
+      circle at 50% 0%,
+      rgba(57, 255, 20, 0.08),
+      rgba(5, 7, 5, 0.88) 55%
+    );
     border: 1px solid rgba(57, 255, 20, 0.2);
     backdrop-filter: blur(24px);
   }
 
-  .contact-panel .scene-kicker { justify-content: center; }
-  .contact-panel h2 { font-size: clamp(3.8rem, 8vw, 8.5rem); }
+  .contact-panel .scene-kicker {
+    justify-content: center;
+  }
+  .contact-panel h2 {
+    font-size: clamp(3.8rem, 8vw, 8.5rem);
+  }
   .contact-panel > p:not(.scene-kicker) {
     max-width: 42rem;
     margin: 2rem auto 0;
@@ -834,7 +1405,83 @@ const scenes = [
     line-height: 1.75;
   }
 
-  .contact-action { width: fit-content; margin: 2.2rem auto 0; }
+  .contact-action {
+    width: fit-content;
+    margin: 2.2rem auto 0;
+  }
+
+  .social-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.6rem;
+    width: min(100%, 44rem);
+    margin: 2.2rem auto 0;
+  }
+
+  .social-grid a {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0.18rem 1rem;
+    padding: 0.9rem 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(7, 10, 7, 0.7);
+    color: var(--color-text);
+    text-align: left;
+    text-decoration: none;
+    transition:
+      border-color 180ms ease,
+      background 180ms ease,
+      transform 180ms ease;
+  }
+
+  .social-grid a:hover {
+    border-color: var(--color-green);
+    background: rgba(57, 255, 20, 0.05);
+    transform: translateY(-2px);
+  }
+
+  .social-grid span {
+    font-size: 0.78rem;
+    font-weight: 650;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .social-grid small {
+    color: #778179;
+    font-family: var(--font-mono);
+    font-size: 0.56rem;
+  }
+
+  .social-grid strong {
+    grid-row: 1 / 3;
+    grid-column: 2;
+    align-self: center;
+    color: var(--color-green);
+    font-family: var(--font-mono);
+    font-weight: 500;
+  }
+
+  .availability-line {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.55rem;
+    margin-top: 1.35rem !important;
+    color: #7e8980 !important;
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .availability-line i {
+    width: 0.4rem;
+    height: 0.4rem;
+    border-radius: 50%;
+    background: var(--color-green);
+    box-shadow: 0 0 8px rgba(57, 255, 20, 0.7);
+  }
 
   .contact-meta {
     display: flex;
@@ -898,19 +1545,35 @@ const scenes = [
   }
 
   .scene-rail a::after {
-    content: '';
+    content: "";
     width: 0.42rem;
     height: 0.42rem;
     border: 1px solid currentColor;
     transform: rotate(45deg);
-    transition: background 180ms ease, box-shadow 180ms ease;
+    transition:
+      background 180ms ease,
+      box-shadow 180ms ease;
   }
 
-  .scene-rail a.is-active { color: var(--color-green); }
-  .scene-rail a.is-active::after { background: var(--color-green); box-shadow: 0 0 10px rgba(57, 255, 20, 0.75); }
-  .rail-label { opacity: 0; transform: translateX(0.5rem); transition: opacity 180ms ease, transform 180ms ease; }
+  .scene-rail a.is-active {
+    color: var(--color-green);
+  }
+  .scene-rail a.is-active::after {
+    background: var(--color-green);
+    box-shadow: 0 0 10px rgba(57, 255, 20, 0.75);
+  }
+  .rail-label {
+    opacity: 0;
+    transform: translateX(0.5rem);
+    transition:
+      opacity 180ms ease,
+      transform 180ms ease;
+  }
   .scene-rail:hover .rail-label,
-  .scene-rail a:focus-visible .rail-label { opacity: 1; transform: translateX(0); }
+  .scene-rail a:focus-visible .rail-label {
+    opacity: 1;
+    transform: translateX(0);
+  }
 
   .system-hud {
     position: fixed;
@@ -926,7 +1589,9 @@ const scenes = [
     letter-spacing: 0.11em;
   }
 
-  .system-hud span:last-child { color: var(--color-green); }
+  .system-hud span:last-child {
+    color: var(--color-green);
+  }
   .hud-pulse {
     width: 0.4rem;
     height: 0.4rem;
@@ -936,59 +1601,161 @@ const scenes = [
     animation: hudPulse 1.8s ease-in-out infinite;
   }
 
-  @keyframes hudPulse { 50% { opacity: 0.35; transform: scale(0.72); } }
+  @keyframes hudPulse {
+    50% {
+      opacity: 0.35;
+      transform: scale(0.72);
+    }
+  }
 
   @media (max-width: 1100px) {
-    .scene-copy { width: min(42rem, 62vw); }
-    .hero-copy { width: min(48rem, 72vw); }
+    .scene-copy {
+      width: min(42rem, 62vw);
+    }
+    .hero-copy {
+      width: min(48rem, 72vw);
+    }
+    .matrix-panel,
+    .proof-panel {
+      width: min(58rem, 78vw);
+    }
     .scene-vignette {
       background:
-        linear-gradient(90deg, rgba(5, 6, 5, 0.88) 0%, rgba(5, 6, 5, 0.32) 58%, transparent 86%),
-        radial-gradient(ellipse at center, transparent 36%, rgba(3, 4, 3, 0.66) 100%);
+        linear-gradient(
+          90deg,
+          rgba(5, 6, 5, 0.88) 0%,
+          rgba(5, 6, 5, 0.32) 58%,
+          transparent 86%
+        ),
+        radial-gradient(
+          ellipse at center,
+          transparent 36%,
+          rgba(3, 4, 3, 0.66) 100%
+        );
     }
   }
 
   @media (max-width: 820px) {
-    .scene-section { min-height: auto; padding-block: 8.5rem 5rem; }
-    .hero-scene { min-height: 100svh; padding-block: 7.5rem 4rem; }
-    .scene-container { width: min(100% - 2rem, 44rem); }
+    .scene-section {
+      min-height: auto;
+      padding-block: 8.5rem 5rem;
+    }
+    .hero-scene {
+      min-height: 100svh;
+      padding-block: 7.5rem 4rem;
+    }
+    .scene-container {
+      width: min(100% - 2rem, 44rem);
+    }
     .scene-left,
-    .scene-right { justify-content: stretch; }
+    .scene-right {
+      justify-content: stretch;
+    }
     .scene-copy,
-    .hero-copy { width: 100%; }
-    .hero-copy { padding-top: 0; }
-    h1 { font-size: clamp(3.25rem, 14vw, 6rem); max-width: 11ch; }
-    .hero-lede { max-width: 34rem; }
-    .hero-capabilities { margin-top: 3rem; }
-    .glass-panel { background: linear-gradient(145deg, rgba(9, 12, 9, 0.92), rgba(5, 7, 5, 0.84)); }
+    .hero-copy {
+      width: 100%;
+    }
+    .matrix-panel,
+    .proof-panel {
+      width: 100%;
+    }
+    .hero-copy {
+      padding-top: 0;
+    }
+    h1 {
+      font-size: clamp(3.25rem, 14vw, 6rem);
+      max-width: 11ch;
+    }
+    .hero-lede {
+      max-width: 34rem;
+    }
+    .hero-capabilities {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      margin-top: 3rem;
+    }
+    .glass-panel {
+      background: linear-gradient(
+        145deg,
+        rgba(9, 12, 9, 0.92),
+        rgba(5, 7, 5, 0.84)
+      );
+    }
     .scene-vignette {
       background:
         linear-gradient(180deg, rgba(5, 6, 5, 0.28), rgba(5, 6, 5, 0.72)),
-        linear-gradient(90deg, rgba(5, 6, 5, 0.72), transparent 50%, rgba(5, 6, 5, 0.45));
+        linear-gradient(
+          90deg,
+          rgba(5, 6, 5, 0.72),
+          transparent 50%,
+          rgba(5, 6, 5, 0.45)
+        );
     }
-    .scene-layer { opacity: 0.55; }
-    .scene-rail { display: none; }
-    .system-hud { left: 1rem; bottom: 0.75rem; }
-    .scroll-cue { display: none; }
+    .scene-layer {
+      opacity: 0.55;
+    }
+    .scene-rail {
+      display: none;
+    }
+    .system-hud {
+      left: 1rem;
+      bottom: 0.75rem;
+    }
+    .scroll-cue {
+      display: none;
+    }
   }
 
   @media (max-width: 560px) {
-    .hero-capabilities { grid-template-columns: 1fr; gap: 0.25rem; border-top: 0; }
-    .hero-capabilities > div { padding: 0.8rem; border-left: 1px solid rgba(57, 255, 20, 0.25); background: rgba(7, 9, 7, 0.6); }
-    .panel-index { margin-bottom: 2rem; }
+    .hero-capabilities {
+      grid-template-columns: 1fr;
+      gap: 0.25rem;
+      border-top: 0;
+    }
+    .hero-capabilities > div {
+      padding: 0.8rem;
+      border-left: 1px solid rgba(57, 255, 20, 0.25);
+      background: rgba(7, 9, 7, 0.6);
+    }
+    .panel-index {
+      margin-bottom: 2rem;
+    }
     .spec-grid,
-    .monitor-grid { grid-template-columns: 1fr; }
-    .route-table > div { grid-template-columns: 1.35fr 0.9fr 0.65fr; gap: 0.4rem; font-size: 0.55rem; }
-    .contact-panel { width: 100%; }
-    .system-hud { display: none; }
-    .action { width: 100%; }
-    .contact-action { width: 100%; }
+    .monitor-grid,
+    .skill-matrix,
+    .proof-grid,
+    .career-path,
+    .social-grid {
+      grid-template-columns: 1fr;
+    }
+    .route-table > div {
+      grid-template-columns: 1.35fr 0.9fr 0.65fr;
+      gap: 0.4rem;
+      font-size: 0.55rem;
+    }
+    .contact-panel {
+      width: 100%;
+    }
+    .system-hud {
+      display: none;
+    }
+    .action {
+      width: 100%;
+    }
+    .contact-action {
+      width: 100%;
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {
     .monitor-grid i,
-    .hud-pulse { animation: none; }
-    .scene-canvas { display: none; }
-    .scene-layer { opacity: 0.5; }
+    .hud-pulse {
+      animation: none;
+    }
+    .scene-canvas {
+      display: none;
+    }
+    .scene-layer {
+      opacity: 0.5;
+    }
   }
 </style>

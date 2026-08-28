@@ -1,10 +1,10 @@
 ---
 // Hero.astro — First screen: name, title, CTAs, 3D scene
 
-import { profile, focusAreas } from '../../data/profile';
-import { socialLinks } from '../../data/socials';
+import { profile } from "../../data/profile";
+import { socialLinks } from "../../data/socials";
 
-const linkedinLink = socialLinks.find((l) => l.platform === 'linkedin');
+const linkedinLink = socialLinks.find((l) => l.platform === "linkedin");
 ---
 
 <section id="hero" class="hero" aria-label="Introduction">
@@ -34,30 +34,34 @@ const linkedinLink = socialLinks.find((l) => l.platform === 'linkedin');
           Explore My Work
         </a>
 
-        {linkedinLink && (
-          <a
-            href={linkedinLink.url}
-            class="btn btn-secondary"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="LinkedIn Profile — opens in new tab"
-          >
-            <span aria-hidden="true">🔗</span>
-            LinkedIn Profile
-          </a>
-        )}
+        {
+          linkedinLink && (
+            <a
+              href={linkedinLink.url}
+              class="btn btn-secondary"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="LinkedIn Profile — opens in new tab"
+            >
+              <span aria-hidden="true">🔗</span>
+              LinkedIn Profile
+            </a>
+          )
+        }
 
-        {profile.cvPath && (
-          <a
-            href={profile.cvPath}
-            class="btn btn-secondary"
-            download
-            aria-label="Download CV PDF"
-          >
-            <span aria-hidden="true">↓</span>
-            Download CV
-          </a>
-        )}
+        {
+          profile.cvPath && (
+            <a
+              href={profile.cvPath}
+              class="btn btn-secondary"
+              download
+              aria-label="Download CV PDF"
+            >
+              <span aria-hidden="true">↓</span>
+              Download CV
+            </a>
+          )
+        }
       </div>
     </div>
 
@@ -75,15 +79,18 @@ const linkedinLink = socialLinks.find((l) => l.platform === 'linkedin');
         <div class="hero-orbit-ring ring-1" aria-hidden="true"></div>
         <div class="hero-orbit-ring ring-2" aria-hidden="true"></div>
         <div class="hero-nodes" aria-hidden="true">
-          {[...Array(6)].map((_, i) => (
-            <div class={`hero-node node-${i + 1}`}></div>
-          ))}
+          {
+            [...Array(6)].map((_, i) => (
+              <div class={`hero-node node-${i + 1}`} />
+            ))
+          }
         </div>
         <div class="hero-glow" aria-hidden="true"></div>
       </div>
 
       <!-- React Three Fiber scene — lazy loaded, Lite Mode aware -->
-      <div id="hero-3d-container" class="hero-3d-container" aria-hidden="true"></div>
+      <div id="hero-3d-container" class="hero-3d-container" aria-hidden="true">
+      </div>
     </div>
   </div>
 
@@ -95,24 +102,26 @@ const linkedinLink = socialLinks.find((l) => l.platform === 'linkedin');
 
   <!-- Ambient particles (CSS only) -->
   <div class="hero-particles" aria-hidden="true">
-    {[...Array(12)].map((_, i) => (
-      <div class={`particle p-${i + 1}`}></div>
-    ))}
+    {[...Array(12)].map((_, i) => <div class={`particle p-${i + 1}`} />)}
   </div>
 </section>
 
 <!-- 3D Scene island — client only, isolated -->
-<script type="module">
+<script type="module" is:inline>
   // Only initialize 3D if not in Lite Mode and WebGL is available
   function isLiteMode() {
-    return localStorage.getItem('sm-lite-mode') === 'true' ||
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    return (
+      localStorage.getItem("sm-lite-mode") === "true" ||
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    );
   }
 
   function hasWebGL() {
     try {
-      const canvas = document.createElement('canvas');
-      return !!(canvas.getContext('webgl') || canvas.getContext('experimental-webgl'));
+      const canvas = document.createElement("canvas");
+      return !!(
+        canvas.getContext("webgl") || canvas.getContext("experimental-webgl")
+      );
     } catch {
       return false;
     }
@@ -121,29 +130,29 @@ const linkedinLink = socialLinks.find((l) => l.platform === 'linkedin');
   async function initScene() {
     if (isLiteMode() || !hasWebGL()) return;
 
-    const container = document.getElementById('hero-3d-container');
+    const container = document.getElementById("hero-3d-container");
     if (!container) return;
 
     // Lazy import Three.js scene
-    const { initHeroScene } = await import('../three/HeroScene.ts');
+    const { initHeroScene } = await import("../three/HeroScene.ts");
     initHeroScene(container);
   }
 
   // Init after page load
-  if (document.readyState === 'complete') {
+  if (document.readyState === "complete") {
     initScene();
   } else {
-    window.addEventListener('load', initScene, { once: true });
+    window.addEventListener("load", initScene, { once: true });
   }
 
   // React to Lite Mode toggle
-  window.addEventListener('litemode', (e) => {
+  window.addEventListener("litemode", (e) => {
     const { lite } = e.detail;
-    const container = document.getElementById('hero-3d-container');
-    const poster = document.getElementById('hero-poster');
+    const container = document.getElementById("hero-3d-container");
+    const poster = document.getElementById("hero-poster");
     if (lite) {
-      if (container) container.innerHTML = '';
-      if (poster) poster.style.opacity = '1';
+      if (container) container.innerHTML = "";
+      if (poster) poster.style.opacity = "1";
     } else {
       initScene();
     }
@@ -244,12 +253,19 @@ const linkedinLink = socialLinks.find((l) => l.platform === 'linkedin');
   }
 
   @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-12px); }
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-12px);
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .hero-shield-poster { animation: none; }
+    .hero-shield-poster {
+      animation: none;
+    }
   }
 
   /* Orbit rings (CSS) */
@@ -274,16 +290,27 @@ const linkedinLink = socialLinks.find((l) => l.platform === 'linkedin');
   }
 
   @keyframes orbit1 {
-    from { transform: rotate(0deg); }
-    to   { transform: rotate(360deg); }
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
   }
   @keyframes orbit2 {
-    from { transform: rotate(0deg); }
-    to   { transform: rotate(360deg); }
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .ring-1, .ring-2 { animation: none; }
+    .ring-1,
+    .ring-2 {
+      animation: none;
+    }
   }
 
   /* Network nodes */
@@ -303,20 +330,54 @@ const linkedinLink = socialLinks.find((l) => l.platform === 'linkedin');
     animation: nodePulse 3s ease-in-out infinite;
   }
 
-  .node-1 { top: 20%; left: 10%; animation-delay: 0s; }
-  .node-2 { top: 10%; right: 15%; animation-delay: 0.5s; }
-  .node-3 { top: 65%; left: 5%; animation-delay: 1s; }
-  .node-4 { bottom: 15%; right: 10%; animation-delay: 1.5s; }
-  .node-5 { top: 40%; right: 5%; animation-delay: 0.75s; }
-  .node-6 { bottom: 30%; left: 20%; animation-delay: 1.25s; }
+  .node-1 {
+    top: 20%;
+    left: 10%;
+    animation-delay: 0s;
+  }
+  .node-2 {
+    top: 10%;
+    right: 15%;
+    animation-delay: 0.5s;
+  }
+  .node-3 {
+    top: 65%;
+    left: 5%;
+    animation-delay: 1s;
+  }
+  .node-4 {
+    bottom: 15%;
+    right: 10%;
+    animation-delay: 1.5s;
+  }
+  .node-5 {
+    top: 40%;
+    right: 5%;
+    animation-delay: 0.75s;
+  }
+  .node-6 {
+    bottom: 30%;
+    left: 20%;
+    animation-delay: 1.25s;
+  }
 
   @keyframes nodePulse {
-    0%, 100% { opacity: 0.4; transform: scale(1); }
-    50% { opacity: 1; transform: scale(1.5); }
+    0%,
+    100% {
+      opacity: 0.4;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.5);
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .hero-node { animation: none; opacity: 0.5; }
+    .hero-node {
+      animation: none;
+      opacity: 0.5;
+    }
   }
 
   /* Glow backdrop */
@@ -324,7 +385,11 @@ const linkedinLink = socialLinks.find((l) => l.platform === 'linkedin');
     position: absolute;
     width: 300px;
     height: 300px;
-    background: radial-gradient(circle, rgba(0, 229, 255, 0.1) 0%, transparent 70%);
+    background: radial-gradient(
+      circle,
+      rgba(0, 229, 255, 0.1) 0%,
+      transparent 70%
+    );
     border-radius: 50%;
     pointer-events: none;
   }
@@ -362,12 +427,22 @@ const linkedinLink = socialLinks.find((l) => l.platform === 'linkedin');
   }
 
   @keyframes scrollHint {
-    0%, 100% { opacity: 0.4; transform: translateX(-50%) translateY(0); }
-    50% { opacity: 0.8; transform: translateX(-50%) translateY(4px); }
+    0%,
+    100% {
+      opacity: 0.4;
+      transform: translateX(-50%) translateY(0);
+    }
+    50% {
+      opacity: 0.8;
+      transform: translateX(-50%) translateY(4px);
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .hero-scroll-hint { animation: none; opacity: 0.5; }
+    .hero-scroll-hint {
+      animation: none;
+      opacity: 0.5;
+    }
   }
 
   /* Particles */
@@ -386,36 +461,109 @@ const linkedinLink = socialLinks.find((l) => l.platform === 'linkedin');
     background: var(--color-cyan);
     border-radius: 50%;
     opacity: 0;
-    animation: particleDrift var(--dur, 8s) var(--delay, 0s) ease-in-out infinite;
+    animation: particleDrift var(--dur, 8s) var(--delay, 0s) ease-in-out
+      infinite;
   }
 
-  .p-1  { left: 5%;  top: 20%; --dur: 9s;  --delay: 0s; }
-  .p-2  { left: 15%; top: 70%; --dur: 12s; --delay: 1s; }
-  .p-3  { left: 25%; top: 40%; --dur: 8s;  --delay: 2s; }
-  .p-4  { left: 40%; top: 85%; --dur: 11s; --delay: 0.5s; }
-  .p-5  { left: 55%; top: 15%; --dur: 7s;  --delay: 1.5s; }
-  .p-6  { left: 65%; top: 55%; --dur: 10s; --delay: 3s; }
-  .p-7  { left: 75%; top: 30%; --dur: 9s;  --delay: 2.5s; }
-  .p-8  { left: 85%; top: 75%; --dur: 13s; --delay: 1s; }
-  .p-9  { left: 90%; top: 50%; --dur: 8s;  --delay: 4s; }
-  .p-10 { left: 30%; top: 10%; --dur: 10s; --delay: 0.3s; }
-  .p-11 { left: 50%; top: 60%; --dur: 11s; --delay: 2s; }
-  .p-12 { left: 70%; top: 90%; --dur: 9s;  --delay: 1.7s; }
+  .p-1 {
+    left: 5%;
+    top: 20%;
+    --dur: 9s;
+    --delay: 0s;
+  }
+  .p-2 {
+    left: 15%;
+    top: 70%;
+    --dur: 12s;
+    --delay: 1s;
+  }
+  .p-3 {
+    left: 25%;
+    top: 40%;
+    --dur: 8s;
+    --delay: 2s;
+  }
+  .p-4 {
+    left: 40%;
+    top: 85%;
+    --dur: 11s;
+    --delay: 0.5s;
+  }
+  .p-5 {
+    left: 55%;
+    top: 15%;
+    --dur: 7s;
+    --delay: 1.5s;
+  }
+  .p-6 {
+    left: 65%;
+    top: 55%;
+    --dur: 10s;
+    --delay: 3s;
+  }
+  .p-7 {
+    left: 75%;
+    top: 30%;
+    --dur: 9s;
+    --delay: 2.5s;
+  }
+  .p-8 {
+    left: 85%;
+    top: 75%;
+    --dur: 13s;
+    --delay: 1s;
+  }
+  .p-9 {
+    left: 90%;
+    top: 50%;
+    --dur: 8s;
+    --delay: 4s;
+  }
+  .p-10 {
+    left: 30%;
+    top: 10%;
+    --dur: 10s;
+    --delay: 0.3s;
+  }
+  .p-11 {
+    left: 50%;
+    top: 60%;
+    --dur: 11s;
+    --delay: 2s;
+  }
+  .p-12 {
+    left: 70%;
+    top: 90%;
+    --dur: 9s;
+    --delay: 1.7s;
+  }
 
   @keyframes particleDrift {
-    0%   { opacity: 0; transform: translateY(0) scale(1); }
-    20%  { opacity: 0.4; }
-    80%  { opacity: 0.2; }
-    100% { opacity: 0; transform: translateY(-80px) scale(0.5); }
+    0% {
+      opacity: 0;
+      transform: translateY(0) scale(1);
+    }
+    20% {
+      opacity: 0.4;
+    }
+    80% {
+      opacity: 0.2;
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-80px) scale(0.5);
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .particle { display: none; }
+    .particle {
+      display: none;
+    }
   }
 
   /* ── Background grid ── */
   .hero::before {
-    content: '';
+    content: "";
     position: absolute;
     inset: 0;
     background-image:
@@ -427,15 +575,24 @@ const linkedinLink = socialLinks.find((l) => l.platform === 'linkedin');
   }
 
   .hero::after {
-    content: '';
+    content: "";
     position: absolute;
     inset: 0;
-    background: radial-gradient(ellipse 80% 60% at 70% 50%, rgba(0, 229, 255, 0.04) 0%, transparent 60%);
+    background: radial-gradient(
+      ellipse 80% 60% at 70% 50%,
+      rgba(0, 229, 255, 0.04) 0%,
+      transparent 60%
+    );
     pointer-events: none;
   }
 
-  .hero-container { position: relative; z-index: 1; }
-  .hero-scroll-hint { z-index: 1; }
+  .hero-container {
+    position: relative;
+    z-index: 1;
+  }
+  .hero-scroll-hint {
+    z-index: 1;
+  }
 
   /* ── Mobile ── */
   @media (max-width: 767px) {
@@ -462,6 +619,8 @@ const linkedinLink = socialLinks.find((l) => l.platform === 'linkedin');
       justify-content: center;
     }
 
-    .hero-scroll-hint { display: none; }
+    .hero-scroll-hint {
+      display: none;
+    }
   }
 </style>

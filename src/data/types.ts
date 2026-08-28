@@ -2,11 +2,20 @@
 // SHARED TYPES — Sharif Madber Portfolio
 // ============================================================
 
-export type PublicationStatus = 'draft' | 'review' | 'published' | 'archived';
+export type PublicationStatus = "draft" | "review" | "published" | "archived";
 
 export interface SocialLink {
-  platform: 'linkedin' | 'email' | 'whatsapp' | 'github' | 'medium' | 'other';
+  platform:
+    | "linkedin"
+    | "email"
+    | "whatsapp"
+    | "github"
+    | "medium"
+    | "tryhackme"
+    | "x"
+    | "other";
   label: string;
+  handle?: string;
   url: string;
   public: boolean;
 }
@@ -71,10 +80,14 @@ export interface Article {
 }
 
 // ── Content filtering ──
-export function isPublished<T extends { status: PublicationStatus }>(item: T): boolean {
-  return item.status === 'published';
+export function isPublished<T extends { status: PublicationStatus }>(
+  item: T,
+): boolean {
+  return item.status === "published";
 }
 
-export function publishedOnly<T extends { status: PublicationStatus }>(items: T[]): T[] {
+export function publishedOnly<T extends { status: PublicationStatus }>(
+  items: T[],
+): T[] {
   return items.filter(isPublished);
 }

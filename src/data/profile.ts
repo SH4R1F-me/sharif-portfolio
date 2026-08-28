@@ -1,13 +1,10 @@
-// ============================================================
-// PROFILE DATA — Sharif Madber Portfolio
-// ============================================================
-// OWNER INPUT: Update all fields after verification
-
 import type { PublicationStatus } from "./types";
 
 export interface Profile {
   name: "Sharif Madber";
   professionalTitle: string;
+  heroLead: string;
+  heroAccent: string;
   shortSummary: string;
   longBio?: string;
   location?: string;
@@ -19,24 +16,23 @@ export interface Profile {
 
 export const profile: Profile = {
   name: "Sharif Madber",
-  professionalTitle: "Enterprise Infrastructure & Full-Stack Systems Engineer",
+  professionalTitle: "Network Engineer & Cybersecurity Practitioner",
+  heroLead: "Secure the signal.",
+  heroAccent: "Keep systems online.",
   shortSummary:
-    "I design resilient enterprise networks, administer server and storage hardware, and build full-stack systems with an operations-first mindset.",
+    "I engineer resilient connectivity, observable infrastructure, and defensible systems across live network and security operations.",
   longBio:
-    "I work across the full technology stack: physical infrastructure, segmented networks, Linux systems, monitoring, and modern application delivery. The goal is always the same—systems that are clear to operate, secure by design, and built to stay online.",
-  // OWNER INPUT: Confirm location before publish
-  location: undefined,
-  // OWNER INPUT: Set availability status
-  availability: undefined,
-  // OWNER INPUT: Add headshot path or leave undefined to show SM shield
+    "I’m a network operator in Makkah with an operations-first mindset shaped by live CCTV, security-system, and connectivity support. Before that, I supported RF networks and user infrastructure across Bangladesh, turning signal, routing, and service incidents into documented fixes. I build secure systems by understanding how they fail—then hardening the path from endpoint to edge.",
+  location: "Makkah, Saudi Arabia",
+  availability: "Open to network, NOC, and security opportunities",
   portrait: undefined,
-  // OWNER INPUT: Add CV PDF path once approved
   cvPath: undefined,
   status: "published",
 };
 
 export const focusAreas: string[] = [
+  "Infrastructure & Hardware",
   "Enterprise Networking",
-  "Hardware Administration",
-  "Full-Stack Development",
+  "Development & Automation",
+  "Monitoring & Security",
 ];

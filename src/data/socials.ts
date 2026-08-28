@@ -1,25 +1,34 @@
-// ============================================================
-// SOCIAL LINKS — Sharif Madber Portfolio
-// ============================================================
-// OWNER INPUT: Add email, GitHub, WhatsApp, Medium once approved
-
-import type { SocialLink } from './types';
+import type { SocialLink } from "./types";
 
 const allLinks: SocialLink[] = [
   {
-    platform: 'linkedin',
-    label: 'LinkedIn',
-    url: 'https://sa.linkedin.com/in/sharifmadber',
+    platform: "tryhackme",
+    label: "TryHackMe",
+    handle: "sharifmadber",
+    url: "https://tryhackme.com/p/sharifmadber",
     public: true,
   },
-  // OWNER INPUT: Add verified email
-  // { platform: 'email', label: 'Email', url: 'mailto:you@example.com', public: true },
-  // OWNER INPUT: Add GitHub profile
-  // { platform: 'github', label: 'GitHub', url: 'https://github.com/username', public: true },
-  // OWNER INPUT: Add Medium profile
-  // { platform: 'medium', label: 'Medium', url: 'https://medium.com/@username', public: true },
-  // OWNER INPUT: Add WhatsApp contact link
-  // { platform: 'whatsapp', label: 'WhatsApp', url: 'https://wa.me/...', public: true },
+  {
+    platform: "medium",
+    label: "Medium",
+    handle: "@sharifmadber",
+    url: "https://medium.com/@sharifmadber",
+    public: true,
+  },
+  {
+    platform: "linkedin",
+    label: "LinkedIn",
+    handle: "/in/sharifmadber",
+    url: "https://www.linkedin.com/in/sharifmadber/",
+    public: true,
+  },
+  {
+    platform: "x",
+    label: "X",
+    handle: "@sharif_madber",
+    url: "https://x.com/sharif_madber",
+    public: true,
+  },
 ];
 
-export const socialLinks = allLinks.filter((l) => l.public);
+export const socialLinks = allLinks.filter((link) => link.public);
